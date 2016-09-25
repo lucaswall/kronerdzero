@@ -7,8 +7,8 @@
 
 .section .text
 
-.globl _framebuffer_init
-_framebuffer_init:
+.globl framebuffer_init
+framebuffer_init:
 
   //imm32 r0,FB_STRUCT + MAIL_TAGS
   ldr r0, =FB_STRUCT
@@ -26,7 +26,7 @@ _framebuffer_init:
   ldr r1, =FB_POINTER // R0 = Frame Buffer Pointer
   ldr r0, [r1]
   cmp r0, #0 // Compare Frame Buffer Pointer To Zero
-  beq _framebuffer_init // IF Zero Re-Initialize Frame Buffer
+  beq framebuffer_init // IF Zero Re-Initialize Frame Buffer
 
   and r0, #0x3FFFFFFF // Convert Mail Box Frame Buffer Pointer From BUS Address To Physical Address ($CXXXXXXX -> $3XXXXXXX)
   str r0, [r1] // Store Frame Buffer Pointer Physical Address
@@ -34,8 +34,8 @@ _framebuffer_init:
   mov pc, lr
 
 
-.globl _framebuffer_getptr
-_framebuffer_getptr:
+.globl framebuffer_getptr
+framebuffer_getptr:
 
   ldr r1, =FB_POINTER
   ldr r0, [r1]
@@ -43,8 +43,8 @@ _framebuffer_getptr:
   mov pc, lr
 
 
-.globl _framebuffer_clear
-_framebuffer_clear:
+.globl framebuffer_clear
+framebuffer_clear:
 
   fb_ptr .req r0
   fb_size .req r1

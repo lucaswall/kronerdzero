@@ -3,7 +3,7 @@ TARGET = kernel7.img
 LIST = kernel7.list
 MAP = kernel7.map
 
-INSTALL_TARGET = /Volumes/boot/kernel7.img
+INSTALL_TARGET = /Volumes/boot/
 
 LINKER = kernel7.ld
 BUILD = build
@@ -40,7 +40,7 @@ $(BUILD)/%.o: $(SOURCE)/%.s $(BUILD)
 	$(AS) -I $(SOURCE) $< -o $@
 
 $(BUILD)/%.o: $(SOURCE)/%.c $(BUILD)
-	$(CC) -I $(SOURCE) $< -o $@
+	$(CC) -I $(SOURCE) -O2 -c $< -o $@
 
 $(BUILD):
 	mkdir $@
