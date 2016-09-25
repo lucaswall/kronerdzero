@@ -1,5 +1,6 @@
 
 .section .init
+
 .globl _start
 _start:
 
@@ -13,72 +14,58 @@ b Entry
 
 Entry:
 
-mov sp,#0x8000
+  mov sp,#0x8000
 
-FB_Init:
+  bl _framebuffer_init
 
-  //imm32 r0,FB_STRUCT + MAIL_TAGS
-  ldr r0, =FB_STRUCT
-  add r0, #8
+  fb_ptr .req r4
+  line_len .req r5
+  pos_y .req r6
+  pos_x .req r7
+  fill_color .req r8
+  line_pos .req r9
+  wait_var .req r9
 
-//PERIPHERAL_BASE                = $3F000000 ; Peripheral Base Address
-//MAIL_BASE   = $B880 ; Mailbox Base Address
-//MAIL_WRITE  =   $20 ; Mailbox Write Register
-//MAIL_TAGS    = $8 ; Mailbox Channel 8: Tags (ARM to VC)
-  //imm32 r1,PERIPHERAL_BASE + MAIL_BASE + MAIL_WRITE + MAIL_TAGS
-  ldr r1, =0x3F00B8A8
-
-  str r0,[r1] // Mail Box Write
-
-  ldr r1, =FB_POINTER // R0 = Frame Buffer Pointer
-  ldr r0, [r1]
-  cmp r0, #0 // Compare Frame Buffer Pointer To Zero
-  beq FB_Init // IF Zero Re-Initialize Frame Buffer
-
-  and r0, #0x3FFFFFFF // Convert Mail Box Frame Buffer Pointer From BUS Address To Physical Address ($CXXXXXXX -> $3XXXXXXX)
-  str r0, [r1] // Store Frame Buffer Pointer Physical Address
-
-
-  mov r3, #2048
+  bl _framebuffer_getptr // ret r0 = frame buffer pointer
+  mov fb_ptr, r0
+  mov line_len, #2048
 
 MainLoop:
 
-  mov r4, #600
+  mov pos_y, #600
 
 go:
  
-  mov r2, #0
-  ldr r1, =0xf800f800
+  mov pos_x, #0
+  ldr fill_color, =0xf800f800
 draw:
-  mul r6, r3, r4
-  add r6, r2
-  str r1, [r0, r6]
-  add r2, #4
-  cmp r2, #2048
+  mul line_pos, line_len, pos_y
+  add line_pos, pos_x
+  str fill_color, [fb_ptr, line_pos]
+  add pos_x, #4
+  cmp pos_x, #2048
   bne draw
 
-  movw r5, #0xffff
+  movw wait_var, #0xffff
 w:
-  sub r5, #1
-  cmp r5, #0
+  subs wait_var, #1
   bne w
 
-  mov r2, #0
-  ldr r1, =0x00000000
-clear:
-  mul r6, r3, r4
-  add r6, r2
-  str r1, [r0, r6]
-  add r2, #4
-  cmp r2, #2048
-  bne clear
-
-  sub r4, #1
-  cmp r4, #100
+  sub pos_y, #1
+  cmp pos_y, #100
   bne go
+
+  bl _framebuffer_clear
 
   b MainLoop
 
+  .unreq fb_ptr
+  .unreq line_len
+  .unreq pos_y
+  .unreq pos_x
+  .unreq fill_color
+  .unreq line_pos
+  .unreq wait_var
 
 Loop:
   b Loop
@@ -87,54 +74,5 @@ CoreLoop: // Infinite Loop For Core 1..3
   b CoreLoop
 
 .ltorg
-
-.align 16
-FB_STRUCT: // Mailbox Property Interface Buffer Structure
-  .int FB_STRUCT_END - FB_STRUCT // Buffer Size In Bytes (Including The Header Values, The End Tag And Padding)
-  .int 0x00000000 // Buffer Request/Response Code
-	       // Request Codes: 0x00000000 Process Request Response Codes: $80000000 Request Successful, $80000001 Partial Response
-// Sequence Of Concatenated Tags
-  .int 0x00048003 // Set_Physical_Display // Tag Identifier
-  .int 0x00000008 // Value Buffer Size In Bytes
-  .int 0x00000008 // 1 bit (MSB) Request/Response Indicator (0=Request, 1=Response), 31 bits (LSB) Value Length In Bytes
-  .int 1024 // SCREEN_X ; Value Buffer
-  .int 768 // SCREEN_Y ; Value Buffer
-
-  .int 0x00048004 // Set_Virtual_Buffer // Tag Identifier
-  .int 0x00000008 // Value Buffer Size In Bytes
-  .int 0x00000008 // 1 bit (MSB) Request/Response Indicator (0=Request, 1=Response), 31 bits (LSB) Value Length In Bytes
-  .int 1024 // SCREEN_X ; Value Buffer
-  .int 768 // SCREEN_Y ; Value Buffer
-
-  .int 0x00048005 // Set_Depth ; Tag Identifier
-  .int 0x00000004 // Value Buffer Size In Bytes
-  .int 0x00000004 // 1 bit (MSB) Request/Response Indicator (0=Request, 1=Response), 31 bits (LSB) Value Length In Bytes
-  .int 16 // BITS_PER_PIXEL ; Value Buffer
-
-  .int 0x00048009 // Set_Virtual_Offset ; Tag Identifier
-  .int 0x00000008 // Value Buffer Size In Bytes
-  .int 0x00000008 // 1 bit (MSB) Request/Response Indicator (0=Request, 1=Response), 31 bits (LSB) Value Length In Bytes
-FB_OFFSET_X:
-  .int 0 // Value Buffer
-FB_OFFSET_Y:
-  .int 0 // Value Buffer
-
-  .int 0x0004800B // Set_Palette ; Tag Identifier
-  .int 0x00000010 // Value Buffer Size In Bytes
-  .int 0x00000010 // 1 bit (MSB) Request/Response Indicator (0=Request, 1=Response), 31 bits (LSB) Value Length In Bytes
-  .int 0 // Value Buffer (Offset: First Palette Index To Set (0-255))
-  .int 2 // Value Buffer (Length: Number Of Palette Entries To Set (1-256))
-FB_PAL:
-  .int 0x00000000,0xFFFFFFFF // RGBA Palette Values (Offset To Offset+Length-1)
-
-  .int 0x00040001 // Allocate_Buffer ; Tag Identifier
-  .int 0x00000008 // Value Buffer Size In Bytes
-  .int 0x00000008 // 1 bit (MSB) Request/Response Indicator (0=Request, 1=Response), 31 bits (LSB) Value Length In Bytes
-FB_POINTER:
-  .int 0 // Value Buffer
-  .int 0 // Value Buffer
-
-.int 0x00000000 // 0x0 (End Tag)
-FB_STRUCT_END:
 
 
