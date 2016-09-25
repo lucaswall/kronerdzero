@@ -2,8 +2,8 @@
 
 .equ SCREEN_X, 640
 .equ SCREEN_Y, 480
-.equ SCREEN_BPP, 16
-.equ PIXEL_SIZE, 2
+.equ SCREEN_BPP, 8
+.equ PIXEL_SIZE, 1
 
 
 .section .text
@@ -146,7 +146,7 @@ FB_STRUCT: // Mailbox Property Interface Buffer Structure
   .int 0 // Value Buffer (Offset: First Palette Index To Set (0-255))
   .int 2 // Value Buffer (Length: Number Of Palette Entries To Set (1-256))
 FB_PAL:
-  .int 0x00000000,0xFFFFFFFF // RGBA Palette Values (Offset To Offset+Length-1)
+  .int 0x00000000,0xff0000ff // RGBA Palette Values (Offset To Offset+Length-1)
 
   .int 0x00040001 // Allocate_Buffer ; Tag Identifier
   .int 0x00000008 // Value Buffer Size In Bytes

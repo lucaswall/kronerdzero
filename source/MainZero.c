@@ -1,7 +1,7 @@
 
 #include <sys/types.h>
 
-uint16_t *framebuffer_getptr();
+uint8_t *framebuffer_getptr();
 void framebuffer_clear();
 void framebuffer_commit();
 
@@ -10,10 +10,10 @@ void wait_some_time(int num);
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 
-#define SQUARE_SZ 10
+#define SQUARE_SZ 32
 
 void MoveSquare(int *x, int *y, int *dx, int *dy);
-void DrawSquare(uint16_t *fb, int x, int y);
+void DrawSquare(uint8_t *fb, int x, int y);
 
 
 void
@@ -23,7 +23,7 @@ MainZero() {
 
 		MoveSquare(&x, &y, &dx, &dy);
 
-		uint16_t *fb = framebuffer_getptr();
+		uint8_t *fb = framebuffer_getptr();
 		framebuffer_clear();
 		DrawSquare(fb, x, y);
 		framebuffer_commit();
@@ -55,13 +55,13 @@ MoveSquare(int *x, int *y, int *dx, int *dy) {
 }
 
 void
-DrawSquare(uint16_t *fb, int x, int y) {
+DrawSquare(uint8_t *fb, int x, int y) {
 	for ( int i = 0; i < SQUARE_SZ; i++ ) {
 		for ( int j = 0; j < SQUARE_SZ; j++ ) {
 			int px = i + x;
 			int py = j + y;
 			int pos = (py * SCREEN_WIDTH) + px;
-			fb[pos] = 0xf800;
+			fb[pos] = 1;
 		}
 	}
 }
