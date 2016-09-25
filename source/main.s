@@ -37,12 +37,12 @@ MainLoop:
 go:
  
   mov pos_x, #0
-  ldr fill_color, =0xf800f800
+  ldr fill_color, =0xf800
 draw:
   mul line_pos, line_len, pos_y
   add line_pos, pos_x
-  str fill_color, [fb_ptr, line_pos]
-  add pos_x, #4
+  strh fill_color, [fb_ptr, line_pos]
+  add pos_x, #2
   cmp pos_x, #2048
   bne draw
 
