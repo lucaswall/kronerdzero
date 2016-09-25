@@ -23,7 +23,7 @@ CC = $(ARMGNU)-gcc
 all: $(TARGET) $(LIST)
 
 install: all
-	cp -fv $(TARGET) $(INSTALL_TARGET)
+	cp -fv $(TARGET) config.txt $(INSTALL_TARGET)
 
 $(LIST): $(ELF)
 	$(OBJDUMP) -d $< > $@

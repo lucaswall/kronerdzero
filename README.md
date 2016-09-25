@@ -4,29 +4,29 @@
 A shoot 'em up game for the Raspberry Pi 3.
 
 
-# Sources
+## Sources
 
 The following sources where used to build the base of the bare metal code.
 
-Baking Pi – Operating Systems Development, course by Alex Chadwick.
+### Baking Pi – Operating Systems Development, course by Alex Chadwick.
 
 https://www.cl.cam.ac.uk/projects/raspberrypi/tutorials/os/index.html
 
-Raspberry Pi, Raspberry Pi 2 & Raspberry Pi 3 Bare Metal Code by krom (Peter Lemon).
+### Raspberry Pi, Raspberry Pi 2 & Raspberry Pi 3 Bare Metal Code by krom (Peter Lemon).
 
 https://github.com/PeterLemon/RaspberryPi
 
-Bare Metal Programming in C, by Brian Sidebotham
+### Bare Metal Programming in C, by Brian Sidebotham
 
 http://www.valvers.com/open-software/raspberry-pi/step01-bare-metal-programming-in-cpt1/
 
 
-# Author
+## Author
 
 - Lucas Wall <wall.lucas@gmail.com>
 
 
-# License
+## License
 
 Copyright (c) 2016 Lucas Wall <wall.lucas@gmail.com>
 
