@@ -36,14 +36,13 @@ $(ELF): $(LINKER)
 $(ELF): $(OBJECTS_S) $(OBJECTS_C)
 	$(LD) --no-undefined $^ -Map $(MAP) -o $@ -T $(LINKER)
 
-$(BUILD)/%.o: $(SOURCE)/%.s $(BUILD)
+$(BUILD)/%.o: $(SOURCE)/%.s
+	@mkdir -p build
 	$(AS) -I $(SOURCE) $< -o $@
 
-$(BUILD)/%.o: $(SOURCE)/%.c $(BUILD)
+$(BUILD)/%.o: $(SOURCE)/%.c
+	@mkdir -p build
 	$(CC) -I $(SOURCE) -O2 -c $< -o $@
-
-$(BUILD):
-	mkdir $@
 
 clean: 
 	rm -rf $(BUILD)

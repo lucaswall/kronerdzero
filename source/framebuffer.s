@@ -3,6 +3,7 @@
 .equ SCREEN_X, 1024
 .equ SCREEN_Y, 768
 .equ SCREEN_BPP, 16
+.equ PIXEL_SIZE, 2
 
 
 .section .text
@@ -37,8 +38,7 @@ framebuffer_init:
 .globl framebuffer_getptr
 framebuffer_getptr:
 
-  ldr r1, =FB_POINTER
-  ldr r0, [r1]
+  ldr r0, =SCREEN_BUFFER
 
   mov pc, lr
 
@@ -46,25 +46,52 @@ framebuffer_getptr:
 .globl framebuffer_clear
 framebuffer_clear:
 
-  fb_ptr .req r0
+  buffer_ptr .req r0
   fb_size .req r1
   clear_color .req r2
 
-  ldr r3, =FB_POINTER
-  ldr fb_ptr, [r3]
+  ldr buffer_ptr, =SCREEN_BUFFER
   ldr r3, =FB_SIZE
   ldr fb_size, [r3]
   mov clear_color, #0
 
 ClearLoop:
-  str clear_color, [fb_ptr]
-  add fb_ptr, #4
+  str clear_color, [buffer_ptr]
+  add buffer_ptr, #4
   subs fb_size, #4
   bne ClearLoop
 
-  .unreq fb_ptr
+  .unreq buffer_ptr
   .unreq fb_size
   .unreq clear_color
+
+  mov pc, lr
+
+
+.globl framebuffer_commit
+framebuffer_commit:
+
+  fb_ptr .req r0
+  fb_size .req r1
+  buffer_ptr .req r2
+
+  ldr r3, =FB_POINTER
+  ldr fb_ptr, [r3]
+  ldr r3, =FB_SIZE
+  ldr fb_size, [r3]
+  ldr buffer_ptr, =SCREEN_BUFFER
+
+CopyLoop:
+  ldr r3, [buffer_ptr]
+  str r3, [fb_ptr]
+  add fb_ptr, #4
+  add buffer_ptr, #4
+  subs fb_size, #4
+  bne CopyLoop
+
+  .unreq fb_ptr
+  .unreq fb_size
+  .unreq buffer_ptr
 
   mov pc, lr
 
@@ -73,6 +100,11 @@ ClearLoop:
 
 
 .section .data
+
+.align 16
+SCREEN_BUFFER:
+.fill SCREEN_X * SCREEN_Y * PIXEL_SIZE
+
 
 .align 16
 FB_STRUCT: // Mailbox Property Interface Buffer Structure
@@ -100,9 +132,7 @@ FB_STRUCT: // Mailbox Property Interface Buffer Structure
   .int 0x00048009 // Set_Virtual_Offset ; Tag Identifier
   .int 0x00000008 // Value Buffer Size In Bytes
   .int 0x00000008 // 1 bit (MSB) Request/Response Indicator (0=Request, 1=Response), 31 bits (LSB) Value Length In Bytes
-FB_OFFSET_X:
   .int 0 // Value Buffer
-FB_OFFSET_Y:
   .int 0 // Value Buffer
 
   .int 0x0004800B // Set_Palette ; Tag Identifier
@@ -123,3 +153,4 @@ FB_SIZE:
 
 .int 0x00000000 // 0x0 (End Tag)
 FB_STRUCT_END:
+

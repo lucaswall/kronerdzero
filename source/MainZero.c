@@ -3,6 +3,8 @@
 
 uint16_t *framebuffer_getptr();
 void framebuffer_clear();
+void framebuffer_commit();
+
 void wait_some_time(int num);
 
 #define SCREEN_WIDTH 1024
@@ -13,15 +15,20 @@ void wait_some_time(int num);
 void MoveSquare(int *x, int *y, int *dx, int *dy);
 void DrawSquare(uint16_t *fb, int x, int y);
 
+
 void
 MainZero() {
-	uint16_t *fb = framebuffer_getptr();
 	int x = 0, y = 0, dx = 1, dy = 1;
 	for ( ;; ) {
+
 		MoveSquare(&x, &y, &dx, &dy);
+
+		uint16_t *fb = framebuffer_getptr();
 		framebuffer_clear();
 		DrawSquare(fb, x, y);
-		wait_some_time(0xffff);
+		framebuffer_commit();
+
+		//wait_some_time(0xffff);
 	}
 }
 
