@@ -1,7 +1,7 @@
 
 
-.equ SCREEN_X, 1024
-.equ SCREEN_Y, 768
+.equ SCREEN_X, 640
+.equ SCREEN_Y, 480
 .equ SCREEN_BPP, 16
 .equ PIXEL_SIZE, 2
 
@@ -48,22 +48,25 @@ framebuffer_clear:
 
   buffer_ptr .req r0
   fb_size .req r1
-  clear_color .req r2
+  clear_color1 .req r2
+  clear_color2 .req r3
 
+  ldr r0, =FB_SIZE
+  ldr fb_size, [r0]
   ldr buffer_ptr, =SCREEN_BUFFER
-  ldr r3, =FB_SIZE
-  ldr fb_size, [r3]
-  mov clear_color, #0
+  mov clear_color1, #0
+  mov clear_color2, #0
 
 ClearLoop:
-  str clear_color, [buffer_ptr]
-  add buffer_ptr, #4
-  subs fb_size, #4
+  strd clear_color1, clear_color2, [buffer_ptr]
+  add buffer_ptr, #8
+  subs fb_size, #8
   bne ClearLoop
 
   .unreq buffer_ptr
   .unreq fb_size
-  .unreq clear_color
+  .unreq clear_color1
+  .unreq clear_color2
 
   mov pc, lr
 
@@ -75,6 +78,7 @@ framebuffer_commit:
   fb_size .req r1
   buffer_ptr .req r2
 
+  push {r4, r5}
   ldr r3, =FB_POINTER
   ldr fb_ptr, [r3]
   ldr r3, =FB_SIZE
@@ -82,17 +86,18 @@ framebuffer_commit:
   ldr buffer_ptr, =SCREEN_BUFFER
 
 CopyLoop:
-  ldr r3, [buffer_ptr]
-  str r3, [fb_ptr]
-  add fb_ptr, #4
-  add buffer_ptr, #4
-  subs fb_size, #4
+  ldrd r4, r5, [buffer_ptr]
+  strd r4, r5, [fb_ptr]
+  add fb_ptr, #8
+  add buffer_ptr, #8
+  subs fb_size, #8
   bne CopyLoop
 
   .unreq fb_ptr
   .unreq fb_size
   .unreq buffer_ptr
 
+  pop {r4, r5}
   mov pc, lr
 
 
