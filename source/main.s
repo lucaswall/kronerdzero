@@ -16,6 +16,16 @@ orr r0,#0x0800 // Branch Prediction (Bit 11)
 orr r0,#0x1000 // Instruction Caches (Bit 12)
 mcr p15,0,r0,c1,c0,0 // System Control Register = R0
 
+ClearBSS:
+  ldr r0, =__bss_start__
+  ldr r1, =__bss_end__
+  mov r2, #0
+  mov r3, #0
+  strd r2, r3, [r0]
+  add r0, #8
+  cmp r0, r1
+  blt ClearBSS
+
 b Entry
 
 .section .text

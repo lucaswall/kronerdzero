@@ -15,16 +15,21 @@ void wait_some_time(int num);
 void MoveSquare(int *x, int *y, int *dx, int *dy);
 void DrawSquare(uint8_t *fb, int x, int y);
 
+static int test_bss;
 
 void
 MainZero() {
 	int x = 0, y = 0, dx = 1, dy = 1;
+	static int test2_bss;
 	for ( ;; ) {
+
+		test2_bss = test_bss + test2_bss + 1;
 
 		MoveSquare(&x, &y, &dx, &dy);
 
 		uint8_t *fb = framebuffer_getptr();
 		framebuffer_clear();
+		fb[SCREEN_WIDTH+test_bss] = 1;
 		DrawSquare(fb, x, y);
 		framebuffer_commit();
 
