@@ -20,6 +20,8 @@ LD = $(ARMGNU)-ld
 AS = $(ARMGNU)-as
 CC = $(ARMGNU)-gcc
 
+CCOPTS = -O2 -mfpu=vfp -mfloat-abi=hard -march=armv7-a -mtune=cortex-a7
+
 all: $(TARGET) $(LIST)
 
 install: all
@@ -31,10 +33,8 @@ $(LIST): $(ELF)
 $(TARGET): $(ELF)
 	$(OBJCOPY) $< -O binary $@
 
-$(ELF): $(LINKER)
-
-$(ELF): $(OBJECTS_S) $(OBJECTS_C)
-	$(LD) --no-undefined $^ -Map $(MAP) -o $@ -T $(LINKER)
+$(ELF): $(OBJECTS_S) $(OBJECTS_C) $(LINKER)
+	$(LD) --no-undefined $(OBJECTS_S) $(OBJECTS_C) -Map $(MAP) -o $@ -T $(LINKER)
 
 $(BUILD)/%.o: $(SOURCE)/%.s
 	@mkdir -p build
@@ -42,7 +42,7 @@ $(BUILD)/%.o: $(SOURCE)/%.s
 
 $(BUILD)/%.o: $(SOURCE)/%.c
 	@mkdir -p build
-	$(CC) -I $(SOURCE) -O2 -c $< -o $@
+	$(CC) $(CCOPTS) -I $(SOURCE) -c $< -o $@
 
 clean: 
 	rm -rf $(BUILD)
