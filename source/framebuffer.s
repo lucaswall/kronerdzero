@@ -1,26 +1,15 @@
 
-
-.equ SCREEN_X, 640
-.equ SCREEN_Y, 480
-.equ SCREEN_BPP, 8
-.equ PIXEL_SIZE, 1
-
+.include "defs.hs"
 
 .section .text
 
 .globl framebuffer_init
 framebuffer_init:
 
-  //imm32 r0,FB_STRUCT + MAIL_TAGS
   ldr r0, =FB_STRUCT
-  add r0, #8
+  add r0, #MAIL_TAGS
 
-//PERIPHERAL_BASE                = $3F000000 ; Peripheral Base Address
-//MAIL_BASE   = $B880 ; Mailbox Base Address
-//MAIL_WRITE  =   $20 ; Mailbox Write Register
-//MAIL_TAGS    = $8 ; Mailbox Channel 8: Tags (ARM to VC)
-  //imm32 r1,PERIPHERAL_BASE + MAIL_BASE + MAIL_WRITE + MAIL_TAGS
-  ldr r1, =0x3F00B8A8
+  ldr r1, =PERIPHERAL_BASE + MAIL_BASE + MAIL_WRITE + MAIL_TAGS
 
   str r0, [r1] // Mail Box Write
 

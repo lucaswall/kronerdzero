@@ -1,4 +1,6 @@
 
+.include "defs.hs"
+
 .section .init
 
 .globl _start
@@ -32,7 +34,6 @@ b Entry
 
 Entry:
 
-  //mov sp, #0x8000
   ldr sp, =(64 * 1024 * 1024)
 
   bl framebuffer_init

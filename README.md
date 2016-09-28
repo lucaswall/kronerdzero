@@ -20,6 +20,10 @@ https://github.com/PeterLemon/RaspberryPi
 
 http://www.valvers.com/open-software/raspberry-pi/step01-bare-metal-programming-in-cpt1/
 
+### Circle, A C++ bare metal environment for Raspberry Pi with USB
+
+https://github.com/rsta2/circle
+
 
 ## Author
 
