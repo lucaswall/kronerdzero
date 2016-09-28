@@ -12,6 +12,8 @@ ELF = $(BUILD)/kernel7.elf
 
 OBJECTS_S := $(patsubst $(SOURCE)/%.s, $(BUILD)/%.o, $(wildcard $(SOURCE)/*.s))
 OBJECTS_C := $(patsubst $(SOURCE)/%.c, $(BUILD)/%.o, $(wildcard $(SOURCE)/*.c))
+SOURCES_C := $(wildcard $(SOURCE)/*.c)
+SOURCES_H := $(wildcard $(SOURCE)/*.h)
 
 ARMGNU ?= arm-none-eabi
 OBJCOPY = $(ARMGNU)-objcopy
@@ -20,7 +22,7 @@ LD = $(ARMGNU)-ld
 AS = $(ARMGNU)-as
 CC = $(ARMGNU)-gcc
 
-CCOPTS = -O2 -mfpu=vfp -mfloat-abi=hard -march=armv7-a -mtune=cortex-a7
+CFLAGS = -O2 -Wall -mfpu=vfp -mfloat-abi=hard -march=armv7-a -mtune=cortex-a7
 
 all: $(TARGET) $(LIST)
 
@@ -34,7 +36,7 @@ $(TARGET): $(ELF)
 	$(OBJCOPY) $< -O binary $@
 
 $(ELF): $(OBJECTS_S) $(OBJECTS_C) $(LINKER)
-	$(LD) --no-undefined $(OBJECTS_S) $(OBJECTS_C) -Map $(MAP) -o $@ -T $(LINKER)
+	$(CC) -nostartfiles -nostdlib $(OBJECTS_S) $(OBJECTS_C) -lgcc -Wl,-Map,$(MAP) -o $@ -Wl,-T,$(LINKER)
 
 $(BUILD)/%.o: $(SOURCE)/%.s
 	@mkdir -p build
@@ -42,7 +44,13 @@ $(BUILD)/%.o: $(SOURCE)/%.s
 
 $(BUILD)/%.o: $(SOURCE)/%.c
 	@mkdir -p build
-	$(CC) $(CCOPTS) -I $(SOURCE) -c $< -o $@
+	$(CC) $(CFLAGS) -I $(SOURCE) -c $< -o $@
+
+$(BUILD)/depends: $(SOURCES_C) $(SOURCES_H)
+	@mkdir -p build
+	$(CC) $(CFLAGS) -MM $(SOURCES_C) > $@
+
+-include $(BUILD)/depends
 
 clean: 
 	rm -rf $(BUILD)

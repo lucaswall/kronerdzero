@@ -1,6 +1,8 @@
 #ifndef __SQUARE_H__
 #define __SQUARE_H__
 
+#include <sys/types.h>
+
 typedef struct {
 	int color;
 	int x, y;

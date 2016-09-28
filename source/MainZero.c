@@ -4,15 +4,17 @@
 #include "framebuffer.h"
 #include "Square.h"
 #include "memory.h"
+#include "mt.h"
 
 void
 MainZero() {
-	int x = 0, y = 0, dx = 1, dy = 1;
+
+	init_genrand(1976);
 
 	for ( int i = 0; i < SQUARE_COUNT; i++ ) {
 		int color = (i % 3) + 1;
-		int x = i * 50;
-		int y = i * 20;
+		int x = genrand_range(10, SCREEN_WIDTH - 50);
+		int y = genrand_range(10, SCREEN_HEIGHT - 50);
 		Square_init(&squares[i], color, x, y);
 	}
 
