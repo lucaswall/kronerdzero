@@ -9,6 +9,9 @@ void init_genrand(unsigned long s);
 /* key_length is its length */
 void init_by_array(unsigned long init_key[], int key_length);
 
+/* initializes mt with random hardware seed. */
+void init_genrand_with_hw();
+
 /* generates a random number on [0,0xffffffff]-interval */
 unsigned long genrand_int32(void);
 

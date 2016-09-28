@@ -10,14 +10,11 @@ void InitSquares();
 void MoveSquares();
 void DrawSquares();
 
-unsigned long temperature_get(void);
-
 void
 MainZero() {
 
 	for ( ;; ) {
-		//init_genrand(temperature_get());
-		init_genrand(0);
+		init_genrand_with_hw();
 		InitSquares();
 		for ( int i = 0; i < 100; i++ ) {
 			MoveSquares();
