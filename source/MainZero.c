@@ -2,15 +2,15 @@
 #include <sys/types.h>
 
 #include "framebuffer.h"
-#include "Square.h"
 #include "memory.h"
 #include "mt.h"
-#include "font8x8_basic.h"
+
+#include "Square.h"
+#include "DrawText.h"
 
 void InitSquares();
 void MoveSquares();
 void DrawSquares();
-void DrawString(uint8_t *fb, int x, int y, int color, const char *str);
 
 void
 MainZero() {
@@ -24,6 +24,7 @@ MainZero() {
 			framebuffer_clear();
 			DrawSquares(fb);
 			DrawString(fb, 300, 200, 1, "Hello WORLD!");
+			DrawNumber(fb, 10, 10, 1, 2637829104);
 			framebuffer_commit();
 		}
 	}
@@ -51,22 +52,5 @@ void
 DrawSquares(uint8_t *fb) {
 	for ( int i = 0; i < SQUARE_COUNT; i++ ) {
 		Square_draw(&squares[i], fb);
-	}
-}
-
-void DrawString(uint8_t *fb, int x, int y, int color, const char *str) {
-	for ( ; *str; str++ ) {
-		uint8_t *glyph = font8x8_basic[(unsigned char) *str];
-		for ( int i = 0; i < 8; i++ ) {
-			for ( int j = 0; j < 8; j++ ) {
-				if ( (glyph[i] & (1 << j)) ) {
-					int px = x + j;
-					int py = y + i;
-					int pos = (py * SCREEN_WIDTH) + px;
-					fb[pos] = color;
-				}
-			}
-		}
-		x += 8;
 	}
 }
