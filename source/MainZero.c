@@ -24,7 +24,7 @@ MainZero() {
 			framebuffer_clear();
 			DrawSquares(fb);
 			DrawString(fb, 300, 200, 1, "Hello WORLD!");
-			DrawNumber(fb, 10, 10, 1, 2637829104);
+			DrawNumber(fb, 10, 10, 1, 217340400);
 			framebuffer_commit();
 		}
 	}
