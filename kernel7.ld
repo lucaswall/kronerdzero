@@ -13,6 +13,7 @@ SECTIONS {
 	.data ALIGN(0x10) : {
 		__data_start = . ;
 		*(.rodata)
+		*(.rodata.*)
 		*(.fini)
 		*(.data)
 		*(COMMON)

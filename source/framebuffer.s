@@ -130,12 +130,13 @@ FB_STRUCT: // Mailbox Property Interface Buffer Structure
   .int 0 // Value Buffer
 
   .int 0x0004800B // Set_Palette ; Tag Identifier
-  .int 0x00000018 // Value Buffer Size In Bytes
-  .int 0x00000018 // 1 bit (MSB) Request/Response Indicator (0=Request, 1=Response), 31 bits (LSB) Value Length In Bytes
+  .int 0x0000001C // Value Buffer Size In Bytes
+  .int 0x0000001C // 1 bit (MSB) Request/Response Indicator (0=Request, 1=Response), 31 bits (LSB) Value Length In Bytes
   .int 0 // Value Buffer (Offset: First Palette Index To Set (0-255))
-  .int 4 // Value Buffer (Length: Number Of Palette Entries To Set (1-256))
+  .int 5 // Value Buffer (Length: Number Of Palette Entries To Set (1-256))
 FB_PAL:
   .int 0x00000000 // RGBA Palette Values (Offset To Offset+Length-1)
+  .int 0xffffffff
   .int 0xff0000ff
   .int 0xff00ff00
   .int 0xffff0000
