@@ -89,31 +89,6 @@ CopyLoop:
   pop {r4, r5}
   mov pc, lr
 
-.globl framebuffer_setpal
-framebuffer_setpal:
-
-  // r0 start index
-  // r1 color count
-  // r2 color table addr
-
-  ldr r3, =FB_PAL
-  lsl r0, #2
-  add r3, r0
-
-pal_loop:
-  cmp r1, #0
-  beq pal_end
-  ldr r0, [r2]
-  str r0, [r3]
-  add r2, #4
-  add r3, #4
-  sub r1, #1
-  b pal_loop
-
-pal_end:
-
-  mov pc, lr
-
 
 .ltorg
 
@@ -162,7 +137,11 @@ FB_STRUCT: // Mailbox Property Interface Buffer Structure
 FB_PAL:
   .int 0x00000000
   .int 0xffffffff
-  .fill 4 * 254
+  .fill 4 * 8
+  .int 0xff0000ff
+  .int 0xff00ff00
+  .int 0xffff0000
+  .fill 4 * 243
 
   .int 0x00040001 // Allocate_Buffer ; Tag Identifier
   .int 0x00000008 // Value Buffer Size In Bytes

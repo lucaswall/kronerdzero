@@ -13,12 +13,9 @@ void InitSquares();
 void MoveSquares();
 void DrawSquares();
 
-uint32_t colors[] = { 0xff0000ff, 0xff00ff00, 0xffff0000 };
-
 void
 MainZero() {
 
-	framebuffer_setpal(10, 3, colors);
 	framebuffer_init();
 	init_genrand_with_hw();
 	InitSquares();
