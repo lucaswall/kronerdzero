@@ -22,12 +22,13 @@ LD = $(ARMGNU)-ld
 AS = $(ARMGNU)-as
 CC = $(ARMGNU)-gcc
 
-CFLAGS = -O2 -Wall # -mfpu=vfp -mfloat-abi=hard -march=armv7-a -mtune=cortex-a7
+CFLAGS = -O2 -Wall -march=armv7-a -mtune=cortex-a7 # -mfpu=vfp -mfloat-abi=hard
 
 all: $(TARGET) $(LIST)
 
 install: all
 	cp -fv $(TARGET) config.txt $(INSTALL_TARGET)
+	diskutil unmount /dev/disk2s1
 
 $(LIST): $(ELF)
 	$(OBJDUMP) -d $< > $@
