@@ -36,8 +36,6 @@ Entry:
 
   ldr sp, =(64 * 1024 * 1024)
 
-  bl framebuffer_init
-
   b MainZero
 
 Loop:

@@ -89,6 +89,31 @@ CopyLoop:
   pop {r4, r5}
   mov pc, lr
 
+.globl framebuffer_setpal
+framebuffer_setpal:
+
+  // r0 start index
+  // r1 color count
+  // r2 color table addr
+
+  ldr r3, =FB_PAL
+  lsl r0, #2
+  add r3, r0
+
+pal_loop:
+  cmp r1, #0
+  beq pal_end
+  ldr r0, [r2]
+  str r0, [r3]
+  add r2, #4
+  add r3, #4
+  sub r1, #1
+  b pal_loop
+
+pal_end:
+
+  mov pc, lr
+
 
 .ltorg
 
@@ -130,16 +155,14 @@ FB_STRUCT: // Mailbox Property Interface Buffer Structure
   .int 0 // Value Buffer
 
   .int 0x0004800B // Set_Palette ; Tag Identifier
-  .int 0x0000001C // Value Buffer Size In Bytes
-  .int 0x0000001C // 1 bit (MSB) Request/Response Indicator (0=Request, 1=Response), 31 bits (LSB) Value Length In Bytes
+  .int 0x00000408 // Value Buffer Size In Bytes
+  .int 0x00000408 // 1 bit (MSB) Request/Response Indicator (0=Request, 1=Response), 31 bits (LSB) Value Length In Bytes
   .int 0 // Value Buffer (Offset: First Palette Index To Set (0-255))
-  .int 5 // Value Buffer (Length: Number Of Palette Entries To Set (1-256))
+  .int 256 // Value Buffer (Length: Number Of Palette Entries To Set (1-256))
 FB_PAL:
-  .int 0x00000000 // RGBA Palette Values (Offset To Offset+Length-1)
+  .int 0x00000000
   .int 0xffffffff
-  .int 0xff0000ff
-  .int 0xff00ff00
-  .int 0xffff0000
+  .fill 4 * 254
 
   .int 0x00040001 // Allocate_Buffer ; Tag Identifier
   .int 0x00000008 // Value Buffer Size In Bytes
