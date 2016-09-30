@@ -22,7 +22,7 @@ LD = $(ARMGNU)-ld
 AS = $(ARMGNU)-as
 CC = $(ARMGNU)-gcc
 
-CFLAGS = -O2 -Wall -mfpu=vfp -mfloat-abi=hard -march=armv7-a -mtune=cortex-a7
+CFLAGS = -O2 -Wall # -mfpu=vfp -mfloat-abi=hard -march=armv7-a -mtune=cortex-a7
 
 all: $(TARGET) $(LIST)
 

@@ -4,6 +4,7 @@
 #include "framebuffer.h"
 #include "memory.h"
 #include "mt.h"
+#include "timer.h"
 
 #include "Square.h"
 #include "DrawText.h"
@@ -15,18 +16,17 @@ void DrawSquares();
 void
 MainZero() {
 
+	init_genrand_with_hw();
+	InitSquares();
 	for ( ;; ) {
-		init_genrand_with_hw();
-		InitSquares();
-		for ( int i = 0; i < 100; i++ ) {
-			MoveSquares();
-			uint8_t *fb = framebuffer_getptr();
-			framebuffer_clear();
-			DrawSquares(fb);
-			DrawString(fb, 300, 200, 1, "Hello WORLD!");
-			DrawNumber(fb, 10, 10, 1, 217340400);
-			framebuffer_commit();
-		}
+		MoveSquares();
+		uint8_t *fb = framebuffer_getptr();
+		framebuffer_clear();
+		DrawSquares(fb);
+		DrawString(fb, 300, 200, 1, "Hello WORLD!");
+		DrawNumber(fb, 0, 5, 1, timer_fps_current);
+		framebuffer_commit();
+		timer_count_frame();
 	}
 
 }
