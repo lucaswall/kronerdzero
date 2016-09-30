@@ -28,7 +28,7 @@ all: $(TARGET) $(LIST)
 
 install: all
 	cp -fv $(TARGET) config.txt $(INSTALL_TARGET)
-	diskutil unmount /dev/disk2s1
+	diskutil unmount $(INSTALL_TARGET)
 
 $(LIST): $(ELF)
 	$(OBJDUMP) -d $< > $@
