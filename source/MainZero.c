@@ -8,6 +8,7 @@
 
 #include "Square.h"
 #include "DrawText.h"
+#include "Sprite.h"
 
 void InitSquares();
 void MoveSquares();
@@ -25,6 +26,7 @@ MainZero() {
 		uint8_t *fb = framebuffer_getptr();
 		framebuffer_clear();
 		DrawSquares(fb);
+		Sprite_draw(&sprShip, fb);
 		DrawString(fb, 300, 200, 1, "Hello WORLD!");
 		DrawNumber(fb, 0, 5, 1, timer_fps_current);
 		framebuffer_commit();
@@ -36,7 +38,7 @@ MainZero() {
 void
 InitSquares() {
 	for ( int i = 0; i < SQUARE_COUNT; i++ ) {
-		int color = (i % 3) + 10;
+		int color = (i % 3) + 2;
 		int x = genrand_range(10, SCREEN_WIDTH - 50);
 		int y = genrand_range(10, SCREEN_HEIGHT - 50);
 		Square_init(&squares[i], color, x, y);

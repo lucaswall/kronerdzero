@@ -137,10 +137,12 @@ FB_STRUCT: // Mailbox Property Interface Buffer Structure
 FB_PAL:
   .int 0x00000000
   .int 0xffffffff
-  .fill 4 * 8
   .int 0xff0000ff
   .int 0xff00ff00
   .int 0xffff0000
+  .fill 4 * 6
+  .int 0xff47fff4
+  .int 0xff9f9fff
   .fill 4 * 243
 
   .int 0x00040001 // Allocate_Buffer ; Tag Identifier
