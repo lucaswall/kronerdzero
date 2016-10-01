@@ -4,7 +4,7 @@
 #define HW_TIMER_BASE 0x3F003000
 #define HW_TIMER_COUNTER 0x04
 
-uint64_t *timer_counter = (uint64_t *) (HW_TIMER_BASE + HW_TIMER_COUNTER);
+volatile uint64_t *timer_counter = (uint64_t *) (HW_TIMER_BASE + HW_TIMER_COUNTER);
 
 uint64_t timer_last_fps_check = 0;
 int timer_fps_count = 0;
