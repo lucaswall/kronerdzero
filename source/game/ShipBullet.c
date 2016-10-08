@@ -66,7 +66,7 @@ SpriteT *
 ShipBullet_newSprite(int x, int y) {
 	SpriteT *bullet = SpriteManager_newSprite();
 	bullet->art = art_ship_bullet;
-	bullet->width = 2;
+	bullet->width = 4;
 	bullet->height = 2;
 	bullet->anchorX = 0;
 	bullet->anchorY = 0;

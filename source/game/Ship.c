@@ -12,7 +12,7 @@ extern uint8_t art_ship4[];
 
 SpriteT *shipSpr;
 
-#define BULLET_LAUNCH_X 4
+#define BULLET_LAUNCH_X 6
 #define BULLET_LAUNCH_Y -1
 #define SHIP_MOVE_DELAY (TIMER_SEC / 80)
 #define SHIP_SHOOT_STOP (TIMER_SEC / 20)
