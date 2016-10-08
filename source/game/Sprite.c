@@ -4,12 +4,13 @@
 #include "timer.h"
 #include "zAssert.h"
 
-#define FRAME_DELAY (1000000 / 12)
+#define FRAME_DELAY (TIMER_SEC / 12)
 
 void
 Sprite_init(SpriteT *spr) {
 	spr->enabled = 1;
 	spr->art = NULL;
+	spr->frames[0] = NULL;
 }
 
 void
@@ -28,6 +29,7 @@ Sprite_setFrames(SpriteT *spr, int count, uint8_t **art) {
 
 void
 Sprite_animate(SpriteT *spr) {
+	if ( spr->frames[0] == NULL ) return;
 	if ( timer_current() >= spr->nextFrame ) {
 		spr->nextFrame = timer_current() + FRAME_DELAY;
 		spr->frame++;

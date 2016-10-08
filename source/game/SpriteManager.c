@@ -1,6 +1,7 @@
 
 #include "SpriteManager.h"
 #include "memory.h"
+#include "zAssert.h"
 
 void
 SpriteManager_init() {
@@ -17,6 +18,7 @@ SpriteManager_newSprite() {
 			return &sprites[i];
 		}
 	}
+	Z_ERROR("no more sprites in pool");
 	return NULL;
 }
 

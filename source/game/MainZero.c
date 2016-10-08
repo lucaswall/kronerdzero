@@ -12,6 +12,7 @@
 #include "SpriteManager.h"
 #include "Ship.h"
 #include "zAssert.h"
+#include "ShipBullet.h"
 
 void InitSquares();
 void MoveSquares();
@@ -34,11 +35,19 @@ GameInit() {
 	InitSquares();
 	SpriteManager_init();
 	Ship_init();
+	ShipBullet_init();
 }
 
 void
 GameLoop() {
+	static int shoot = 0;
+	if ( shoot++ > 10 ) {
+		shoot = 0;
+		Ship_shoot();
+	}
+
 	MoveSquares();
+	ShipBullet_update();
 	uint8_t *fb = framebuffer_getptr();
 	framebuffer_clear();
 	DrawSquares(fb);

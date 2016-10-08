@@ -2,5 +2,6 @@
 #define __SHIP_H__
 
 void Ship_init();
+void Ship_shoot();
 
 #endif
