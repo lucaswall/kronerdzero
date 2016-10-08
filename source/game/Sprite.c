@@ -2,17 +2,28 @@
 #include "Sprite.h"
 #include "framebuffer.h"
 #include "timer.h"
+#include "zAssert.h"
 
 #define FRAME_DELAY (1000000 / 12)
 
 void
 Sprite_init(SpriteT *spr) {
 	spr->enabled = 1;
-	spr->frame = 0;
-	for ( int i = 0; i < MAX_FRAMES; i++ ) {
-		spr->frames[i] = NULL;
+	spr->art = NULL;
+}
+
+void
+Sprite_setFrames(SpriteT *spr, int count, uint8_t **art) {
+	Z_ASSERT(count <= MAX_FRAMES, "too many frames for sprite");
+	for ( int i = 0; i < count; i++ ) {
+		spr->frames[i] = art[i];
 	}
-	spr->nextFrame = timer_current() + FRAME_DELAY;
+	spr->frames[count+1] = NULL;
+	spr->frame = 0;
+	if ( spr->art == NULL ) {
+		spr->nextFrame = timer_current() + FRAME_DELAY;
+		spr->art = spr->frames[0];
+	}
 }
 
 void
@@ -29,6 +40,7 @@ Sprite_animate(SpriteT *spr) {
 
 void
 Sprite_draw(SpriteT *spr, uint8_t *fb) {
+	if ( spr->art == NULL ) return;
 	int px = spr->x - spr->anchorX;
 	int py = spr->y - spr->anchorY;
 	for ( int y = 0; y < spr->height; y++ ) {

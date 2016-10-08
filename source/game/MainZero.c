@@ -21,20 +21,10 @@ void GameLoop();
 
 void
 MainZero() {
-
 	GameInit();
-
-	int test = 300;
-
 	for ( ;; ) {
 		GameLoop();
-
-		if ( --test == 0 ) {
-			zAssert(1 == 0);
-		}
-
 	}
-
 }
 
 void

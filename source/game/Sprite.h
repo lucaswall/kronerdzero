@@ -8,7 +8,7 @@
 typedef struct {
 	int enabled;
 	uint8_t *art;
-	uint8_t *frames[MAX_FRAMES];
+	uint8_t *frames[MAX_FRAMES+1];
 	int frame;
 	int nextFrame;
 	int width, height;
@@ -17,6 +17,7 @@ typedef struct {
 } SpriteT;
 
 void Sprite_init(SpriteT *spr);
+void Sprite_setFrames(SpriteT *spr, int count, uint8_t **art);
 void Sprite_animate(SpriteT *spr);
 void Sprite_draw(SpriteT *spr, uint8_t *fb);
 
