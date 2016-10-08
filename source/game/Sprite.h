@@ -2,13 +2,12 @@
 #define __SPRITE_H__
 
 #include <sys/types.h>
-
-#define MAX_FRAMES 10
+#include "config.h"
 
 typedef struct {
 	int enabled;
 	uint8_t *art;
-	uint8_t *frames[MAX_FRAMES+1];
+	uint8_t *frames[SPRITE_MAX_FRAMES+1];
 	int frame;
 	int nextFrame;
 	int width, height;

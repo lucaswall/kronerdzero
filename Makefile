@@ -49,7 +49,7 @@ $(BUILD)/%.o: $(SOURCE)/%.c
 
 $(BUILD)/depends: $(SOURCES_C) $(SOURCES_H)
 	@mkdir -p build
-	$(CC) $(CFLAGS) -MM $(SOURCES_C) > $@
+	$(CC) $(CFLAGS) -MM $(SOURCES_C) | sed 's/.*\.o: source\/\(.*\)\.c/build\/\1.o: source\/\1.c/g' > $@
 
 -include $(BUILD)/depends
 

@@ -3,8 +3,7 @@
 #include "framebuffer.h"
 #include "timer.h"
 #include "zAssert.h"
-
-#define FRAME_DELAY (TIMER_SEC / 12)
+#include "config.h"
 
 void
 Sprite_init(SpriteT *spr) {
@@ -15,14 +14,14 @@ Sprite_init(SpriteT *spr) {
 
 void
 Sprite_setFrames(SpriteT *spr, int count, uint8_t **art) {
-	Z_ASSERT(count <= MAX_FRAMES, "too many frames for sprite");
+	Z_ASSERT(count <= SPRITE_MAX_FRAMES, "too many frames for sprite");
 	for ( int i = 0; i < count; i++ ) {
 		spr->frames[i] = art[i];
 	}
 	spr->frames[count+1] = NULL;
 	spr->frame = 0;
 	if ( spr->art == NULL ) {
-		spr->nextFrame = timer_current() + FRAME_DELAY;
+		spr->nextFrame = timer_current() + SPRITE_FRAME_DELAY;
 		spr->art = spr->frames[0];
 	}
 }
@@ -31,7 +30,7 @@ void
 Sprite_animate(SpriteT *spr) {
 	if ( spr->frames[0] == NULL ) return;
 	if ( timer_current() >= spr->nextFrame ) {
-		spr->nextFrame = timer_current() + FRAME_DELAY;
+		spr->nextFrame = timer_current() + SPRITE_FRAME_DELAY;
 		spr->frame++;
 		if ( spr->frames[spr->frame] == NULL ) {
 			spr->frame = 0;

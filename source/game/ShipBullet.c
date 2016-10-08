@@ -3,10 +3,7 @@
 #include "SpriteManager.h"
 #include "zAssert.h"
 #include "timer.h"
-
-#define MAX_SHIPBULLET 20
-#define BULLET_MOVE_DELAY (TIMER_SEC / 400)
-#define BULLET_MAX_X 645
+#include "config.h"
 
 extern uint8_t art_ship_bullet[];
 

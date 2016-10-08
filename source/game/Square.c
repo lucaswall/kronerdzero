@@ -3,6 +3,7 @@
 #include "mt.h"
 #include "SpriteManager.h"
 #include "Square.h"
+#include "config.h"
 
 uint8_t art_square1[] = {
 	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
@@ -70,8 +71,6 @@ typedef struct {
 
 void Square_init(SquareT *sq, int i);
 void Square_move(SquareT *sq);
-
-#define SQUARE_COUNT 10
 
 SquareT squares[SQUARE_COUNT];
 

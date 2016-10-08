@@ -3,6 +3,7 @@
 #include "SpriteManager.h"
 #include "ShipBullet.h"
 #include "timer.h"
+#include "config.h"
 
 extern uint8_t art_ship0[];
 extern uint8_t art_ship1[];
@@ -11,11 +12,6 @@ extern uint8_t art_ship3[];
 extern uint8_t art_ship4[];
 
 SpriteT *shipSpr;
-
-#define BULLET_LAUNCH_X 6
-#define BULLET_LAUNCH_Y -1
-#define SHIP_MOVE_DELAY (TIMER_SEC / 80)
-#define SHIP_SHOOT_STOP (TIMER_SEC / 20)
 
 int shipMoveY = 0;
 int shipMoveNext;

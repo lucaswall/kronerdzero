@@ -1,8 +1,7 @@
 
 #include "SpriteManager.h"
 #include "zAssert.h"
-
-#define MAX_SPRITE 200
+#include "config.h"
 
 SpriteT sprites[MAX_SPRITE];
 
