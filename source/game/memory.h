@@ -5,8 +5,9 @@
 #include "Sprite.h"
 
 #define SQUARE_COUNT 10
+#define MAX_SPRITE 200
 
 extern SquareT squares[];
-extern SpriteT sprShip;
+extern SpriteT sprites[];
 
 #endif

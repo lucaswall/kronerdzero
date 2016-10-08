@@ -1,6 +1,31 @@
 
 #include "Sprite.h"
 #include "framebuffer.h"
+#include "timer.h"
+
+#define FRAME_DELAY (1000000 / 12)
+
+void
+Sprite_init(SpriteT *spr) {
+	spr->enabled = 1;
+	spr->frame = 0;
+	for ( int i = 0; i < MAX_FRAMES; i++ ) {
+		spr->frames[i] = NULL;
+	}
+	spr->nextFrame = timer_current() + FRAME_DELAY;
+}
+
+void
+Sprite_animate(SpriteT *spr) {
+	if ( timer_current() >= spr->nextFrame ) {
+		spr->nextFrame = timer_current() + FRAME_DELAY;
+		spr->frame++;
+		if ( spr->frames[spr->frame] == NULL ) {
+			spr->frame = 0;
+		}
+		spr->art = spr->frames[spr->frame];
+	}
+}
 
 void
 Sprite_draw(SpriteT *spr, uint8_t *fb) {

@@ -9,6 +9,8 @@
 #include "Square.h"
 #include "DrawText.h"
 #include "Sprite.h"
+#include "SpriteManager.h"
+#include "Ship.h"
 
 void InitSquares();
 void MoveSquares();
@@ -20,13 +22,15 @@ MainZero() {
 	framebuffer_init();
 	init_genrand_with_hw();
 	InitSquares();
+	SpriteManager_init();
+	Ship_init();
 
 	for ( ;; ) {
 		MoveSquares();
 		uint8_t *fb = framebuffer_getptr();
 		framebuffer_clear();
 		DrawSquares(fb);
-		Sprite_draw(&sprShip, fb);
+		SpriteManager_draw(fb);
 		DrawString(fb, 300, 200, 1, "Hello WORLD!");
 		DrawNumber(fb, 0, 5, 1, timer_fps_current);
 		framebuffer_commit();
