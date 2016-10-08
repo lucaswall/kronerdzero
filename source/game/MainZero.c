@@ -11,32 +11,52 @@
 #include "Sprite.h"
 #include "SpriteManager.h"
 #include "Ship.h"
+#include "zAssert.h"
 
 void InitSquares();
 void MoveSquares();
 void DrawSquares();
+void GameInit();
+void GameLoop();
 
 void
 MainZero() {
 
+	GameInit();
+
+	int test = 300;
+
+	for ( ;; ) {
+		GameLoop();
+
+		if ( --test == 0 ) {
+			zAssert(1 == 0);
+		}
+
+	}
+
+}
+
+void
+GameInit() {
 	framebuffer_init();
 	init_genrand_with_hw();
 	InitSquares();
 	SpriteManager_init();
 	Ship_init();
+}
 
-	for ( ;; ) {
-		MoveSquares();
-		uint8_t *fb = framebuffer_getptr();
-		framebuffer_clear();
-		DrawSquares(fb);
-		SpriteManager_draw(fb);
-		DrawString(fb, 300, 200, 1, "Hello WORLD!");
-		DrawNumber(fb, 0, 5, 1, timer_fps_current);
-		framebuffer_commit();
-		timer_count_frame();
-	}
-
+void
+GameLoop() {
+	MoveSquares();
+	uint8_t *fb = framebuffer_getptr();
+	framebuffer_clear();
+	DrawSquares(fb);
+	SpriteManager_draw(fb);
+	DrawString(fb, 300, 200, 1, "Hello WORLD!");
+	DrawNumber(fb, 0, 5, 1, timer_fps_current);
+	framebuffer_commit();
+	timer_count_frame();
 }
 
 void

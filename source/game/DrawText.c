@@ -13,6 +13,13 @@ void DrawString(uint8_t *fb, int x, int y, int color, const char *str) {
 	}
 }
 
+void DrawStringBoxed(uint8_t *fb, int x, int y, int color, const char *str) {
+	for ( ; *str; str++ ) {
+		DrawCharBoxed(fb, x, y, color, *str);
+		x += 8;
+	}
+}
+
 void DrawNumber(uint8_t *fb, int x, int y, int color, unsigned long num) {
 	char buf[100];
 	int pos = 0;
@@ -49,6 +56,18 @@ void DrawChar(uint8_t *fb, int x, int y, int color, const char ch) {
 				int pos = (py * SCREEN_WIDTH) + px;
 				fb[pos] = color;
 			}
+		}
+	}
+}
+
+void DrawCharBoxed(uint8_t *fb, int x, int y, int color, const char ch) {
+	uint8_t *glyph = font8x8_basic[(unsigned char) ch];
+	for ( int i = 0; i < 8; i++ ) {
+		for ( int j = 0; j < 8; j++ ) {
+			int px = x + j;
+			int py = y + i;
+			int pos = (py * SCREEN_WIDTH) + px;
+			fb[pos] = (glyph[i] & (1 << j)) ? color : 0;
 		}
 	}
 }
