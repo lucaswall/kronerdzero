@@ -34,7 +34,7 @@ ShipBullet_new(int x, int y) {
 	int idx = ShipBullet_findFree();
 	if ( idx < 0 ) return;
 	bullets[idx].enabled = 1;
-	bullets[idx].nextMove = timer_current() + BULLET_MOVE_DELAY;
+	bullets[idx].nextMove = timer_current();
 	bullets[idx].spr = ShipBullet_newSprite(x, y);
 }
 

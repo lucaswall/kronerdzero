@@ -14,7 +14,12 @@ SpriteT *shipSpr;
 
 #define BULLET_LAUNCH_X 4
 #define BULLET_LAUNCH_Y -1
-#define SHIP_MOVE_DELAY (TIMER_SEC / 100)
+#define SHIP_MOVE_DELAY (TIMER_SEC / 80)
+#define SHIP_SHOOT_STOP (TIMER_SEC / 20)
+
+int shipMoveY = 0;
+int shipMoveNext;
+int shipStopped = 0;
 
 void
 Ship_init() {
@@ -27,9 +32,39 @@ Ship_init() {
 	shipSpr->anchorY = 8;
 	shipSpr->x = 10;
 	shipSpr->y = 100;
+	shipMoveNext = timer_current();
+}
+
+void
+Ship_update() {
+	int dt = timer_current() - shipMoveNext;
+	if ( dt > 0 ) {
+		int dy = (dt / SHIP_MOVE_DELAY) + 1;
+		shipMoveNext += SHIP_MOVE_DELAY * dy;
+		if ( shipMoveY != 0 && shipStopped < timer_current() ) {
+			shipSpr->y += shipMoveY > 0 ? dy : -dy;
+			shipMoveY = 0;
+		}
+	}
+}
+
+int
+Ship_posY() {
+	return shipSpr->y;
 }
 
 void
 Ship_shoot() {
 	ShipBullet_new(shipSpr->x + BULLET_LAUNCH_X, shipSpr->y + BULLET_LAUNCH_Y);
+	shipStopped = timer_current() + SHIP_SHOOT_STOP;
+}
+
+void
+Ship_moveDown() {
+	shipMoveY = 1;
+}
+
+void
+Ship_moveUp() {
+	shipMoveY = -1;
 }
