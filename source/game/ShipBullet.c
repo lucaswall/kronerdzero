@@ -99,6 +99,5 @@ ShipBullet_move(ShipBulletT *bullet) {
 void
 ShipBullet_collideSquare(ShipBulletT *bullet, SquareT *square) {
 	ShipBullet_destroy(bullet);
-	square->enabled = 0;
-	square->spr->enabled = 0;
+	Square_destroy(square);
 }

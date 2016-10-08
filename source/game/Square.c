@@ -68,6 +68,7 @@ void Square_init(SquareT *sq, int i);
 void Square_move(SquareT *sq);
 
 SquareT squares[SQUARE_COUNT];
+int squaresCount = 0;
 
 void
 Squares_init() {
@@ -78,6 +79,9 @@ Squares_init() {
 
 void
 Squares_move() {
+	if ( squaresCount == 0 ) {
+		Squares_init();
+	}
 	for ( int i = 0; i < SQUARE_COUNT; i++ ) {
 		if ( squares[i].enabled ) {
 			Square_move(&squares[i]);
@@ -86,7 +90,15 @@ Squares_move() {
 }
 
 void
+Square_destroy(SquareT *square) {
+	square->enabled = 0;
+	square->spr->enabled = 0;
+	squaresCount--;
+}
+
+void
 Square_init(SquareT *sq, int i) {
+	squaresCount++;
 	sq->enabled = 1;
 	sq->spr = SpriteManager_newSprite();
 	sq->spr->tag = TAG_SQUARE;

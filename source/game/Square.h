@@ -12,5 +12,6 @@ typedef struct {
 
 void Squares_init();
 void Squares_move();
+void Square_destroy(SquareT *square);
 
 #endif
