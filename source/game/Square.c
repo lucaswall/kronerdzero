@@ -1,49 +1,126 @@
 
 #include "framebuffer.h"
+#include "mt.h"
+#include "SpriteManager.h"
 #include "Square.h"
-#include "memory.h"
 
-#define SQUARE_SZ 32
+uint8_t art_square1[] = {
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+	2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
+};
+
+uint8_t art_square2[] = {
+	3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+	3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+	3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+	3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+	3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+	3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+	3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+	3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+	3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+	3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+	3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+	3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+	3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+	3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+	3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+	3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+};
+
+uint8_t art_square3[] = {
+	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
+};
+
+uint8_t *art_squares[] = { art_square1, art_square2, art_square3 };
+
+typedef struct {
+	SpriteT *spr;
+	int dx, dy;
+} SquareT;
+
+void Square_init(SquareT *sq, int i);
+void Square_move(SquareT *sq);
+
+#define SQUARE_COUNT 10
+
+SquareT squares[SQUARE_COUNT];
 
 void
-Square_init(SquareT *sq, int color, int x, int y) {
-	sq->color = color;
-	sq->x = x;
-	sq->y = y;
+Squares_init() {
+	for ( int i = 0; i < SQUARE_COUNT; i++ ) {
+		Square_init(&squares[i], i);
+	}
+}
+
+void
+Squares_move() {
+	for ( int i = 0; i < SQUARE_COUNT; i++ ) {
+		Square_move(&squares[i]);
+	}
+}
+
+void
+Square_init(SquareT *sq, int i) {
+	sq->spr = SpriteManager_newSprite();
+	sq->spr->art = art_squares[i % 3];
+	sq->spr->width = 16;
+	sq->spr->height = 16;
+	sq->spr->anchorX = 8;
+	sq->spr->anchorY = 8;
+	sq->spr->x = genrand_range(10, SCREEN_WIDTH - 50);
+	sq->spr->y = genrand_range(10, SCREEN_HEIGHT - 50);
 	sq->dx = 1;
 	sq->dy = 1;
 }
 
 void
 Square_move(SquareT *sq) {
-	sq->x += sq->dx;
-	sq->y += sq->dy;
-	if ( sq->x > SCREEN_WIDTH - SQUARE_SZ ) {
-		sq->x = SCREEN_WIDTH - SQUARE_SZ;
+	sq->spr->x += sq->dx;
+	sq->spr->y += sq->dy;
+	if ( sq->spr->x > SCREEN_WIDTH - sq->spr->width ) {
+		sq->spr->x = SCREEN_WIDTH - sq->spr->width;
 		sq->dx = -1;
 	}
-	if ( sq->y > SCREEN_HEIGHT - SQUARE_SZ ) {
-		sq->y = SCREEN_HEIGHT - SQUARE_SZ;
+	if ( sq->spr->y > SCREEN_HEIGHT - sq->spr->height ) {
+		sq->spr->y = SCREEN_HEIGHT - sq->spr->height;
 		sq->dy = -1;
 	}
-	if ( sq->x < 0 ) {
-		sq->x = 0;
+	if ( sq->spr->x < 0 ) {
+		sq->spr->x = 0;
 		sq->dx = 1;
 	}
-	if ( sq->y < 0 ) {
-		sq->y = 0;
+	if ( sq->spr->y < 0 ) {
+		sq->spr->y = 0;
 		sq->dy = 1;
-	}
-}
-
-void
-Square_draw(SquareT *sq, uint8_t *fb) {
-	for ( int i = 0; i < SQUARE_SZ; i++ ) {
-		for ( int j = 0; j < SQUARE_SZ; j++ ) {
-			int px = i + sq->x;
-			int py = j + sq->y;
-			int pos = (py * SCREEN_WIDTH) + px;
-			fb[pos] = sq->color;
-		}
 	}
 }

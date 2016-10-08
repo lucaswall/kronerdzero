@@ -1,7 +1,10 @@
 
 #include "SpriteManager.h"
-#include "memory.h"
 #include "zAssert.h"
+
+#define MAX_SPRITE 200
+
+SpriteT sprites[MAX_SPRITE];
 
 void
 SpriteManager_init() {
