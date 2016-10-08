@@ -21,6 +21,7 @@ Ship_init() {
 	uint8_t *frames[] = { art_ship0, art_ship1, art_ship2, art_ship3, art_ship4, art_ship3, art_ship2, art_ship1 };
 	shipSpr = SpriteManager_newSprite();
 	Sprite_setFrames(shipSpr, sizeof(frames)/sizeof(uint8_t *), frames);
+	shipSpr->tag = TAG_SHIP;
 	shipSpr->width = 16;
 	shipSpr->height = 16;
 	shipSpr->anchorX = 8;

@@ -29,7 +29,24 @@ SpriteManager_draw(uint8_t *fb) {
 	for ( int i = 0; i < MAX_SPRITE; i++ ) {
 		if ( sprites[i].enabled ) {
 			Sprite_animate(&sprites[i]);
-			Sprite_draw(&sprites[i], fb);
+			SpriteManager_checkCollide(&sprites[i]);
+			if ( sprites[i].enabled ) {
+				Sprite_draw(&sprites[i], fb);
+			}
+		}
+	}
+}
+
+void
+SpriteManager_checkCollide(SpriteT *spr) {
+	if ( spr->collideMask != 0 ) {
+		for ( int i = 0; i < MAX_SPRITE; i++ ) {
+			if ( sprites[i].enabled && &sprites[i] != spr && (sprites[i].tag & spr->collideMask) == sprites[i].tag ) {
+				if ( Sprite_overlap(spr, &sprites[i]) ) {
+					(*spr->collideCallback)(spr->collideData, sprites[i].collideData);
+					return;
+				}
+			}
 		}
 	}
 }

@@ -64,11 +64,6 @@ uint8_t art_square3[] = {
 
 uint8_t *art_squares[] = { art_square1, art_square2, art_square3 };
 
-typedef struct {
-	SpriteT *spr;
-	int dx, dy;
-} SquareT;
-
 void Square_init(SquareT *sq, int i);
 void Square_move(SquareT *sq);
 
@@ -84,13 +79,18 @@ Squares_init() {
 void
 Squares_move() {
 	for ( int i = 0; i < SQUARE_COUNT; i++ ) {
-		Square_move(&squares[i]);
+		if ( squares[i].enabled ) {
+			Square_move(&squares[i]);
+		}
 	}
 }
 
 void
 Square_init(SquareT *sq, int i) {
+	sq->enabled = 1;
 	sq->spr = SpriteManager_newSprite();
+	sq->spr->tag = TAG_SQUARE;
+	sq->spr->collideData = sq;
 	sq->spr->art = art_squares[i % 3];
 	sq->spr->width = 16;
 	sq->spr->height = 16;

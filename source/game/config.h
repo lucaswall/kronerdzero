@@ -15,4 +15,8 @@
 #define SPRITE_MAX_FRAMES 10
 #define MAX_SPRITE 200
 
+#define TAG_SHIP 1
+#define TAG_SHIPBULLET (1 << 1)
+#define TAG_SQUARE (1 << 2)
+
 #endif

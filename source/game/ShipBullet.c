@@ -4,6 +4,7 @@
 #include "zAssert.h"
 #include "timer.h"
 #include "config.h"
+#include "Square.h"
 
 extern uint8_t art_ship_bullet[];
 
@@ -17,7 +18,9 @@ ShipBulletT bullets[MAX_SHIPBULLET];
 
 int ShipBullet_findFree();
 SpriteT *ShipBullet_newSprite();
+void ShipBullet_destroy(ShipBulletT *bullet);
 void ShipBullet_move(ShipBulletT *bullet);
+void ShipBullet_collideSquare(ShipBulletT *bullet, SquareT *square);
 
 void
 ShipBullet_init() {
@@ -33,6 +36,7 @@ ShipBullet_new(int x, int y) {
 	bullets[idx].enabled = 1;
 	bullets[idx].nextMove = timer_current();
 	bullets[idx].spr = ShipBullet_newSprite(x, y);
+	Sprite_setCollide(bullets[idx].spr, TAG_SQUARE, (SpriteCollideCallback *) &ShipBullet_collideSquare, &bullets[idx]);
 }
 
 void
@@ -62,6 +66,7 @@ ShipBullet_findFree() {
 SpriteT *
 ShipBullet_newSprite(int x, int y) {
 	SpriteT *bullet = SpriteManager_newSprite();
+	bullet->tag = TAG_SHIPBULLET;
 	bullet->art = art_ship_bullet;
 	bullet->width = 4;
 	bullet->height = 2;
@@ -73,6 +78,12 @@ ShipBullet_newSprite(int x, int y) {
 }
 
 void
+ShipBullet_destroy(ShipBulletT *bullet) {
+	bullet->spr->enabled = 0;
+	bullet->enabled = 0;
+}
+
+void
 ShipBullet_move(ShipBulletT *bullet) {
 	int dt = timer_current() - bullet->nextMove;
 	if ( dt > 0 ) {
@@ -80,8 +91,14 @@ ShipBullet_move(ShipBulletT *bullet) {
 		bullet->spr->x += dx;
 		bullet->nextMove += BULLET_MOVE_DELAY * dx;
 		if ( bullet->spr->x >= BULLET_MAX_X ) {
-			bullet->spr->enabled = 0;
-			bullet->enabled = 0;
+			ShipBullet_destroy(bullet);
 		}
 	}
+}
+
+void
+ShipBullet_collideSquare(ShipBulletT *bullet, SquareT *square) {
+	ShipBullet_destroy(bullet);
+	square->enabled = 0;
+	square->spr->enabled = 0;
 }

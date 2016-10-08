@@ -10,6 +10,8 @@ Sprite_init(SpriteT *spr) {
 	spr->enabled = 1;
 	spr->art = NULL;
 	spr->frames[0] = NULL;
+	spr->tag = 0;
+	spr->collideMask = 0;
 }
 
 void
@@ -56,4 +58,24 @@ Sprite_draw(SpriteT *spr, uint8_t *fb) {
 			}
 		}
 	}
+}
+
+void
+Sprite_setCollide(SpriteT *spr, uint16_t mask, SpriteCollideCallback *callback, void *data) {
+	spr->collideMask = mask;
+	spr->collideCallback = callback;
+	spr->collideData = data;
+}
+
+int
+Sprite_overlap(SpriteT *spr1, SpriteT *spr2) {
+	int spr1_minx = spr1->x - spr1->anchorX;
+	int spr1_maxx = spr1->x + spr1->anchorX - 1;
+	int spr1_miny = spr1->y - spr1->anchorY;
+	int spr1_maxy = spr1->y + spr1->anchorY - 1;
+	int spr2_minx = spr2->x - spr2->anchorX;
+	int spr2_maxx = spr2->x + spr2->anchorX - 1;
+	int spr2_miny = spr2->y - spr2->anchorY;
+	int spr2_maxy = spr2->y + spr2->anchorY - 1;
+	return spr1_maxx >= spr2_minx && spr1_minx <= spr2_maxx && spr1_maxy >= spr2_miny && spr1_miny <= spr2_maxy;
 }
