@@ -13,8 +13,8 @@ extern uint8_t art_ship4[];
 
 SpriteT *shipSpr;
 
-int shipMoveY = 0;
-int shipMoveNext;
+int shipMoveY;
+uint64_t shipMoveNext;
 
 void
 Ship_init() {
@@ -28,12 +28,13 @@ Ship_init() {
 	shipSpr->anchorY = 8;
 	shipSpr->x = 10;
 	shipSpr->y = 100;
+	shipMoveY = 0;
 	shipMoveNext = timer_current();
 }
 
 void
 Ship_update() {
-	int dt = timer_current() - shipMoveNext;
+	int64_t dt = timer_current() - shipMoveNext;
 	if ( dt > 0 ) {
 		int dy = (dt / SHIP_MOVE_DELAY) + 1;
 		shipMoveNext += SHIP_MOVE_DELAY * dy;

@@ -11,7 +11,7 @@ typedef struct {
 	uint8_t *art;
 	uint8_t *frames[SPRITE_MAX_FRAMES+1];
 	int frame;
-	int nextFrame;
+	uint64_t nextFrame;
 	int width, height;
 	int anchorX, anchorY;
 	int x, y;

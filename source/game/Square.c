@@ -68,10 +68,11 @@ void Square_init(SquareT *sq, int i);
 void Square_move(SquareT *sq);
 
 SquareT squares[SQUARE_COUNT];
-int squaresCount = 0;
+int squaresCount;
 
 void
 Squares_init() {
+	squaresCount = 0;
 	for ( int i = 0; i < SQUARE_COUNT; i++ ) {
 		Square_init(&squares[i], i);
 	}

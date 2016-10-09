@@ -10,7 +10,7 @@ extern uint8_t art_ship_bullet[];
 
 typedef struct {
 	int enabled;
-	int nextMove;
+	uint64_t nextMove;
 	SpriteT *spr;
 } ShipBulletT;
 
@@ -85,7 +85,7 @@ ShipBullet_destroy(ShipBulletT *bullet) {
 
 void
 ShipBullet_move(ShipBulletT *bullet) {
-	int dt = timer_current() - bullet->nextMove;
+	int64_t dt = timer_current() - bullet->nextMove;
 	if ( dt > 0 ) {
 		int dx = (dt / BULLET_MOVE_DELAY) + 1;
 		bullet->spr->x += dx;

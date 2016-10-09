@@ -54,7 +54,7 @@ SceneStory_loop() {
 		finished = 1;
 		return;
 	}
-	int dt = timer_current() - textNextMove;
+	int64_t dt = timer_current() - textNextMove;
 	if ( dt > 0 ) {
 		int dy = (dt / TEXT_MOVE_DELAY) + 1;
 		textSpr->y -= dy;
