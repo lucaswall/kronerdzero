@@ -32,7 +32,7 @@ void
 Sprite_animate(SpriteT *spr) {
 	if ( spr->frames[0] == NULL ) return;
 	if ( timer_current() >= spr->nextFrame ) {
-		spr->nextFrame = timer_current() + SPRITE_FRAME_DELAY;
+		spr->nextFrame += SPRITE_FRAME_DELAY;
 		spr->frame++;
 		if ( spr->frames[spr->frame] == NULL ) {
 			spr->frame = 0;
