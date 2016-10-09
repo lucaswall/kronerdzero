@@ -7,5 +7,6 @@ extern int timer_fps_current;
 
 uint64_t timer_current();
 void timer_count_frame();
+void timer_sleep(uint64_t delay);
 
 #endif

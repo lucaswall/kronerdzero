@@ -79,14 +79,16 @@ Squares_init() {
 
 void
 Squares_move() {
-	if ( squaresCount == 0 ) {
-		Squares_init();
-	}
 	for ( int i = 0; i < SQUARE_COUNT; i++ ) {
 		if ( squares[i].enabled ) {
 			Square_move(&squares[i]);
 		}
 	}
+}
+
+int
+Squares_count() {
+	return squaresCount;
 }
 
 void

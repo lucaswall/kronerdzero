@@ -27,3 +27,9 @@ timer_count_frame() {
 		timer_last_fps_check = *timer_counter;
 	}
 }
+
+void
+timer_sleep(uint64_t delay) {
+	uint64_t wait = timer_current() + delay;
+	while ( timer_current() < wait ) {}
+}
