@@ -135,15 +135,7 @@ FB_STRUCT: // Mailbox Property Interface Buffer Structure
   .int 0 // Value Buffer (Offset: First Palette Index To Set (0-255))
   .int 256 // Value Buffer (Length: Number Of Palette Entries To Set (1-256))
 FB_PAL:
-  .int 0x00000000
-  .int 0xffffffff
-  .int 0xff0000ff
-  .int 0xff00ff00
-  .int 0xffff0000
-  .fill 4 * 6
-  .int 0xff47fff4
-  .int 0xff9f9fff
-  .fill 4 * 243
+  .include "../art/palette.s"
 
   .int 0x00040001 // Allocate_Buffer ; Tag Identifier
   .int 0x00000008 // Value Buffer Size In Bytes

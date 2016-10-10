@@ -5,8 +5,7 @@
 #include "timer.h"
 #include "config.h"
 #include "Square.h"
-
-extern uint8_t art_ship_bullet[];
+#include "art.h"
 
 typedef struct {
 	int enabled;
@@ -67,9 +66,9 @@ SpriteT *
 ShipBullet_newSprite(int x, int y) {
 	SpriteT *bullet = SpriteManager_newSprite();
 	bullet->tag = TAG_SHIPBULLET;
-	bullet->art = art_ship_bullet;
-	bullet->width = 4;
-	bullet->height = 2;
+	bullet->art = art_herobullet;
+	bullet->width = art_herobullet_width;
+	bullet->height = art_herobullet_height;
 	bullet->anchorX = 0;
 	bullet->anchorY = 0;
 	bullet->x = x;

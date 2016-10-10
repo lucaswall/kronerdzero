@@ -24,9 +24,11 @@ CC = $(ARMGNU)-gcc
 
 CFLAGS =  -I $(SOURCE)/system -I $(SOURCE)/art -I $(SOURCE)/game -O2 -Wall -march=armv7-a -mtune=cortex-a7 # -mfpu=vfp -mfloat-abi=hard
 
-all: $(TARGET) $(LIST)
+all: install
 
-install: all
+build: $(TARGET) $(LIST)
+
+install: build
 	cp -fv $(TARGET) config.txt $(INSTALL_TARGET)
 	diskutil unmount $(INSTALL_TARGET)
 

@@ -4,28 +4,21 @@
 #include "ShipBullet.h"
 #include "timer.h"
 #include "config.h"
-
-extern uint8_t art_ship0[];
-extern uint8_t art_ship1[];
-extern uint8_t art_ship2[];
-extern uint8_t art_ship3[];
-extern uint8_t art_ship4[];
+#include "art.h"
 
 SpriteT *shipSpr;
-
 int shipMoveY;
 uint64_t shipMoveNext;
 
 void
 Ship_init() {
-	uint8_t *frames[] = { art_ship0, art_ship1, art_ship2, art_ship3, art_ship4, art_ship3, art_ship2, art_ship1 };
 	shipSpr = SpriteManager_newSprite();
-	Sprite_setFrames(shipSpr, sizeof(frames)/sizeof(uint8_t *), frames);
+	Sprite_setFrames(shipSpr, sizeof(art_heroship_frames)/sizeof(uint8_t *), art_heroship_frames);
 	shipSpr->tag = TAG_SHIP;
-	shipSpr->width = 16;
-	shipSpr->height = 16;
-	shipSpr->anchorX = 8;
-	shipSpr->anchorY = 8;
+	shipSpr->width = art_heroship0_width;
+	shipSpr->height = art_heroship0_height;
+	shipSpr->anchorX = art_heroship0_width / 2;
+	shipSpr->anchorY = art_heroship0_height / 2;
 	shipSpr->x = 10;
 	shipSpr->y = 100;
 	shipMoveY = 0;
