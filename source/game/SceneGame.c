@@ -5,11 +5,12 @@
 #include "mt.h"
 #include "timer.h"
 
-#include "Square.h"
+#include "EnemySpawner.h"
 #include "DrawText.h"
 #include "SpriteManager.h"
 #include "Ship.h"
 #include "ShipBullet.h"
+#include "EnemySpawner.h"
 
 int finished;
 
@@ -18,7 +19,7 @@ SceneGame_init() {
 	SpriteManager_init();
 	Ship_init();
 	ShipBullet_init();
-	Squares_init();
+	EnemySpawner_init();
 	finished = 0;
 }
 
@@ -35,10 +36,10 @@ SceneGame_loop() {
 	if ( shipDir > 0 ) Ship_moveDown();
 	else Ship_moveUp();
 
-	Squares_move();
+	EnemySpawner_update();
 	ShipBullet_update();
 	Ship_update();
-	finished = Squares_count() == 0;
+	finished = EnemySpawner_enemyCount() > 50;
 
 	uint8_t *fb = framebuffer_getptr();
 	framebuffer_clear();

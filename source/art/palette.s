@@ -1,6 +1,8 @@
 .int 0xff000000
 .int 0xffffffff
-.int 0xff47fff4
+.int 0xff5897c5
+.int 0xffbb4da6
 .int 0xff0000ff
+.int 0xff47fff4
 .int 0xff9f9fff
-.fill 4 * 251
+.fill 4 * 249

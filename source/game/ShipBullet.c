@@ -4,8 +4,8 @@
 #include "zAssert.h"
 #include "timer.h"
 #include "config.h"
-#include "Square.h"
 #include "art.h"
+#include "EnemySpawner.h"
 
 typedef struct {
 	int enabled;
@@ -19,7 +19,7 @@ int ShipBullet_findFree();
 SpriteT *ShipBullet_newSprite();
 void ShipBullet_destroy(ShipBulletT *bullet);
 void ShipBullet_move(ShipBulletT *bullet);
-void ShipBullet_collideSquare(ShipBulletT *bullet, SquareT *square);
+void ShipBullet_collideEnemy(ShipBulletT *bullet, EnemyT *enemy);
 
 void
 ShipBullet_init() {
@@ -35,7 +35,7 @@ ShipBullet_new(int x, int y) {
 	bullets[idx].enabled = 1;
 	bullets[idx].nextMove = timer_current();
 	bullets[idx].spr = ShipBullet_newSprite(x, y);
-	Sprite_setCollide(bullets[idx].spr, TAG_SQUARE, (SpriteCollideCallback *) &ShipBullet_collideSquare, &bullets[idx]);
+	Sprite_setCollide(bullets[idx].spr, TAG_ENEMY, (SpriteCollideCallback *) &ShipBullet_collideEnemy, &bullets[idx]);
 }
 
 void
@@ -84,19 +84,14 @@ ShipBullet_destroy(ShipBulletT *bullet) {
 
 void
 ShipBullet_move(ShipBulletT *bullet) {
-	int64_t dt = timer_current() - bullet->nextMove;
-	if ( dt > 0 ) {
-		int dx = (dt / BULLET_MOVE_DELAY) + 1;
-		bullet->spr->x += dx;
-		bullet->nextMove += BULLET_MOVE_DELAY * dx;
-		if ( bullet->spr->x >= BULLET_MAX_X ) {
-			ShipBullet_destroy(bullet);
-		}
+	bullet->spr->x += checkMoveNext(&bullet->nextMove, BULLET_MOVE_DELAY);
+	if ( bullet->spr->x >= BULLET_MAX_X ) {
+		ShipBullet_destroy(bullet);
 	}
 }
 
 void
-ShipBullet_collideSquare(ShipBulletT *bullet, SquareT *square) {
+ShipBullet_collideEnemy(ShipBulletT *bullet, EnemyT *enemy) {
 	ShipBullet_destroy(bullet);
-	Square_destroy(square);
+	EnemySpawner_destroy(enemy);
 }

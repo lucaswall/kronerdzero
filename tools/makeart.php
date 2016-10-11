@@ -33,12 +33,17 @@ foreach ( $palette as $c ) {
 fprintf($fp, ".fill 4 * %d\n", 256 - count($palette));
 fclose($fp);
 
-echo "Ok.\n";
+echo "Done.\n";
 
 function processImage($fn, &$palette, $fp_c, $fp_h) {
 	$name = basename($fn, ".png");
-	echo $name . "\n";
-	$img = new Imagick($fn);
+	echo $name;
+	try {
+		$img = new Imagick($fn);
+	} catch(Exception $e) {
+		echo " ... ERROR!\n";
+		return;
+	}
 	$width = $img->getImageWidth();
 	$height = $img->getImageHeight();
 
@@ -62,6 +67,7 @@ function processImage($fn, &$palette, $fp_c, $fp_h) {
 		$it->syncIterator();
 	}
 	fprintf($fp_c, "};\n\n");
+	echo " ... Ok\n";
 }
 
 function locateColor(&$palette, $color) {

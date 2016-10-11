@@ -27,14 +27,10 @@ Ship_init() {
 
 void
 Ship_update() {
-	int64_t dt = timer_current() - shipMoveNext;
-	if ( dt > 0 ) {
-		int dy = (dt / SHIP_MOVE_DELAY) + 1;
-		shipMoveNext += SHIP_MOVE_DELAY * dy;
-		if ( shipMoveY != 0 ) {
-			shipSpr->y += shipMoveY > 0 ? dy : -dy;
-			shipMoveY = 0;
-		}
+	int dy = checkMoveNext(&shipMoveNext, SHIP_MOVE_DELAY);
+	if ( dy > 0 && shipMoveY != 0 ) {
+		shipSpr->y += shipMoveY > 0 ? dy : -dy;
+		shipMoveY = 0;
 	}
 }
 

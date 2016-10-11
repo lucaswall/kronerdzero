@@ -14,10 +14,7 @@
 int currentScene = SCENE_STORY;
 
 void
-MainZero() {
-	framebuffer_init();
-	init_genrand_with_hw();
-	timer_sleep(TIMER_SEC*3);
+GameLoop() {
 	SceneStory_init();
 	for ( ;; ) {
 		switch ( currentScene ) {
@@ -37,4 +34,24 @@ MainZero() {
 				break;
 		}
 	}
+}
+
+void
+TestLoop() {
+	SceneGame_init();
+	for ( ;; ) {
+		SceneGame_loop();
+		if ( SceneGame_finished() ) {
+			SceneGame_init();
+		}
+	}
+}
+
+void
+MainZero() {
+	framebuffer_init();
+	init_genrand_with_hw();
+	timer_sleep(TIMER_SEC*3);
+	//GameLoop();
+	TestLoop();
 }

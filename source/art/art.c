@@ -14,3 +14,9 @@ uint8_t *art_heroship_frames[10] = {
 	art_heroship1,
 };
 
+uint8_t *art_enemy01_frames[4] = {
+	art_enemy01_0,
+	art_enemy01_1,
+	art_enemy01_2,
+	art_enemy01_1,
+};
