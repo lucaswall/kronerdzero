@@ -9,6 +9,8 @@ typedef struct {
 	int enabled;
 	uint64_t nextMove;
 	SpriteT *spr;
+	int y;
+	int ang;
 } EnemyT;
 
 void EnemySpawner_init();

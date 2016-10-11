@@ -4,6 +4,7 @@
 #include "art.h"
 #include "framebuffer.h"
 #include "zAssert.h"
+#include "mathsupport.h"
 
 EnemyT enemies[MAX_ENEMY];
 uint64_t nextSpawn;
@@ -31,6 +32,8 @@ EnemySpawner_update() {
 		enemy->nextMove = timer_current();
 		enemy->spr = EnemySpawner_newSprite();
 		enemy->spr->collideData = enemy;
+		enemy->y = genrand_range(enemy->spr->height / 2 + ENEMY01_MOVE_AMPLITUDE, SCREEN_HEIGHT - enemy->spr->height / 2 - ENEMY01_MOVE_AMPLITUDE);
+		enemy->ang = 0;
 	}
 	for ( int i = 0; i < MAX_ENEMY; i++ ) {
 		if ( enemies[i].enabled ) {
@@ -71,13 +74,18 @@ EnemySpawner_newSprite() {
 	spr->anchorX = art_enemy01_0_width / 2;
 	spr->anchorY = art_enemy01_0_height / 2;
 	spr->x = SCREEN_WIDTH + spr->width / 2;
-	spr->y = genrand_range(spr->height / 2, SCREEN_HEIGHT - spr->height / 2);
+	spr->y = 0;
 	return spr;
 }
 
 void
 EnemySpawner_moveEnemy(EnemyT *enemy) {
-	enemy->spr->x -= checkMoveNext(&enemy->nextMove, ENEMY01_MOVE_LEFT_DELAY);
+	int dx = checkMoveNext(&enemy->nextMove, ENEMY01_MOVE_LEFT_DELAY);
+	if ( dx > 0 ) {
+		enemy->spr->x -= dx;
+		enemy->ang += dx * 2;
+		enemy->spr->y = enemy->y + ENEMY01_MOVE_AMPLITUDE * sine(enemy->ang) / TRIG_BASE_VALUE;
+	} 
 	if ( enemy->spr->x < -enemy->spr->width/2 ) {
 		EnemySpawner_destroy(enemy);
 	}
