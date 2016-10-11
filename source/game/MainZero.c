@@ -52,6 +52,6 @@ MainZero() {
 	framebuffer_init();
 	init_genrand_with_hw();
 	timer_sleep(TIMER_SEC*3);
-	//GameLoop();
-	TestLoop();
+	GameLoop();
+	//TestLoop();
 }
