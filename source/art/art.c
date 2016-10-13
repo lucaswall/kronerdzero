@@ -21,10 +21,15 @@ uint8_t *art_enemy01_frames[4] = {
 	art_enemy01_1,
 };
 
-uint8_t *art_explosion01_frames[5] = {
-	art_explosion01_0,
-	art_explosion01_1,
-	art_explosion01_2,
-	art_explosion01_3,
-	art_explosion01_4,
+uint8_t *art_explosion01_frames[10] = {
+	art_explosion01_00,
+	art_explosion01_01,
+	art_explosion01_02,
+	art_explosion01_03,
+	art_explosion01_04,
+	art_explosion01_05,
+	art_explosion01_06,
+	art_explosion01_07,
+	art_explosion01_08,
+	art_explosion01_09,
 };

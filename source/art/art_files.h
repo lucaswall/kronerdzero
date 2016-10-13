@@ -15,25 +15,45 @@ extern int art_enemy01_2_width;
 extern int art_enemy01_2_height;
 extern uint8_t art_enemy01_2[];
 
-extern int art_explosion01_0_width;
-extern int art_explosion01_0_height;
-extern uint8_t art_explosion01_0[];
+extern int art_explosion01_00_width;
+extern int art_explosion01_00_height;
+extern uint8_t art_explosion01_00[];
 
-extern int art_explosion01_1_width;
-extern int art_explosion01_1_height;
-extern uint8_t art_explosion01_1[];
+extern int art_explosion01_01_width;
+extern int art_explosion01_01_height;
+extern uint8_t art_explosion01_01[];
 
-extern int art_explosion01_2_width;
-extern int art_explosion01_2_height;
-extern uint8_t art_explosion01_2[];
+extern int art_explosion01_02_width;
+extern int art_explosion01_02_height;
+extern uint8_t art_explosion01_02[];
 
-extern int art_explosion01_3_width;
-extern int art_explosion01_3_height;
-extern uint8_t art_explosion01_3[];
+extern int art_explosion01_03_width;
+extern int art_explosion01_03_height;
+extern uint8_t art_explosion01_03[];
 
-extern int art_explosion01_4_width;
-extern int art_explosion01_4_height;
-extern uint8_t art_explosion01_4[];
+extern int art_explosion01_04_width;
+extern int art_explosion01_04_height;
+extern uint8_t art_explosion01_04[];
+
+extern int art_explosion01_05_width;
+extern int art_explosion01_05_height;
+extern uint8_t art_explosion01_05[];
+
+extern int art_explosion01_06_width;
+extern int art_explosion01_06_height;
+extern uint8_t art_explosion01_06[];
+
+extern int art_explosion01_07_width;
+extern int art_explosion01_07_height;
+extern uint8_t art_explosion01_07[];
+
+extern int art_explosion01_08_width;
+extern int art_explosion01_08_height;
+extern uint8_t art_explosion01_08[];
+
+extern int art_explosion01_09_width;
+extern int art_explosion01_09_height;
+extern uint8_t art_explosion01_09[];
 
 extern int art_herobullet_width;
 extern int art_herobullet_height;

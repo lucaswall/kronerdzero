@@ -5,6 +5,6 @@
 
 extern uint8_t *art_heroship_frames[10];
 extern uint8_t *art_enemy01_frames[4];
-extern uint8_t *art_explosion01_frames[5];
+extern uint8_t *art_explosion01_frames[10];
 
 #endif
