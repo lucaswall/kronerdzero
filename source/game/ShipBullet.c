@@ -93,5 +93,5 @@ ShipBullet_move(ShipBulletT *bullet) {
 void
 ShipBullet_collideEnemy(ShipBulletT *bullet, EnemyT *enemy) {
 	ShipBullet_destroy(bullet);
-	EnemySpawner_destroy(enemy);
+	EnemySpawner_hit(enemy);
 }

@@ -7,6 +7,7 @@
 
 typedef struct {
 	int enabled;
+	int alive;
 	uint64_t nextMove;
 	SpriteT *spr;
 	int y;
@@ -16,6 +17,6 @@ typedef struct {
 void EnemySpawner_init();
 void EnemySpawner_update();
 int EnemySpawner_enemyCount();
-void EnemySpawner_destroy(EnemyT *enemy);
+void EnemySpawner_hit(EnemyT *enemy);
 
 #endif

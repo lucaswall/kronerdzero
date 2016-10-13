@@ -20,8 +20,10 @@ Sprite_setFrames(SpriteT *spr, int count, uint8_t **art) {
 	for ( int i = 0; i < count; i++ ) {
 		spr->frames[i] = art[i];
 	}
-	spr->frames[count+1] = NULL;
+	spr->frames[count] = NULL;
 	spr->frame = 0;
+	spr->loop = 1;
+	spr->madeLoop = 0;
 	if ( spr->art == NULL ) {
 		spr->nextFrame = timer_current() + SPRITE_FRAME_DELAY;
 		spr->art = spr->frames[0];
@@ -31,11 +33,17 @@ Sprite_setFrames(SpriteT *spr, int count, uint8_t **art) {
 void
 Sprite_animate(SpriteT *spr) {
 	if ( spr->frames[0] == NULL ) return;
+	if ( ! spr->loop && spr->madeLoop ) return;
 	if ( timer_current() >= spr->nextFrame ) {
 		spr->nextFrame += SPRITE_FRAME_DELAY;
 		spr->frame++;
 		if ( spr->frames[spr->frame] == NULL ) {
-			spr->frame = 0;
+			if ( spr->loop ) {
+				spr->frame = 0;
+			} else {
+				spr->frame--;
+			}
+			spr->madeLoop = 1;
 		}
 		spr->art = spr->frames[spr->frame];
 	}

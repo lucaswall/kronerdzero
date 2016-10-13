@@ -15,6 +15,26 @@ extern int art_enemy01_2_width;
 extern int art_enemy01_2_height;
 extern uint8_t art_enemy01_2[];
 
+extern int art_explosion01_0_width;
+extern int art_explosion01_0_height;
+extern uint8_t art_explosion01_0[];
+
+extern int art_explosion01_1_width;
+extern int art_explosion01_1_height;
+extern uint8_t art_explosion01_1[];
+
+extern int art_explosion01_2_width;
+extern int art_explosion01_2_height;
+extern uint8_t art_explosion01_2[];
+
+extern int art_explosion01_3_width;
+extern int art_explosion01_3_height;
+extern uint8_t art_explosion01_3[];
+
+extern int art_explosion01_4_width;
+extern int art_explosion01_4_height;
+extern uint8_t art_explosion01_4[];
+
 extern int art_herobullet_width;
 extern int art_herobullet_height;
 extern uint8_t art_herobullet[];

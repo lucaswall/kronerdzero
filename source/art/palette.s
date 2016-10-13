@@ -3,6 +3,7 @@
 .int 0xff5897c5
 .int 0xffbb4da6
 .int 0xff0000ff
+.int 0xff6969ff
 .int 0xff47fff4
 .int 0xff9f9fff
-.fill 4 * 249
+.fill 4 * 248

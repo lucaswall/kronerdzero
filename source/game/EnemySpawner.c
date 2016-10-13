@@ -8,11 +8,14 @@
 
 EnemyT enemies[MAX_ENEMY];
 uint64_t nextSpawn;
+int enemyCount;
 
+void EnemySpawner_updateEnemy(EnemyT *enemy);
+void EnemySpawner_spawn();
 EnemyT *EnemySpawner_findFree();
 SpriteT *EnemySpawner_newSprite();
 void EnemySpawner_moveEnemy(EnemyT *enemy);
-int enemyCount;
+void EnemySpawner_destroy(EnemyT *enemy);
 
 void
 EnemySpawner_init() {
@@ -26,25 +29,50 @@ EnemySpawner_init() {
 void
 EnemySpawner_update() {
 	if ( checkMoveNext(&nextSpawn, ENEMY_DELAY) > 0 ) {
-		enemyCount++;
-		EnemyT *enemy = EnemySpawner_findFree();
-		enemy->enabled = 1;
-		enemy->nextMove = timer_current();
-		enemy->spr = EnemySpawner_newSprite();
-		enemy->spr->collideData = enemy;
-		enemy->y = genrand_range(enemy->spr->height / 2 + ENEMY01_MOVE_AMPLITUDE, SCREEN_HEIGHT - enemy->spr->height / 2 - ENEMY01_MOVE_AMPLITUDE);
-		enemy->ang = 0;
+		EnemySpawner_spawn();
 	}
 	for ( int i = 0; i < MAX_ENEMY; i++ ) {
 		if ( enemies[i].enabled ) {
-			EnemySpawner_moveEnemy(&enemies[i]);
+			EnemySpawner_updateEnemy(&enemies[i]);
 		}
 	}
+}
+
+void
+EnemySpawner_updateEnemy(EnemyT *enemy) {
+	if ( enemy->alive ) {
+		EnemySpawner_moveEnemy(enemy);
+	} else {
+		if ( enemy->spr->madeLoop ) {
+			EnemySpawner_destroy(enemy);
+		}
+	}
+}
+
+void
+EnemySpawner_spawn() {
+	enemyCount++;
+	EnemyT *enemy = EnemySpawner_findFree();
+	enemy->enabled = 1;
+	enemy->alive = 1;
+	enemy->nextMove = timer_current();
+	enemy->spr = EnemySpawner_newSprite();
+	enemy->spr->collideData = enemy;
+	enemy->y = genrand_range(enemy->spr->height / 2 + ENEMY01_MOVE_AMPLITUDE, SCREEN_HEIGHT - enemy->spr->height / 2 - ENEMY01_MOVE_AMPLITUDE);
+	enemy->ang = 0;
 }
 
 int
 EnemySpawner_enemyCount() {
 	return enemyCount;
+}
+
+void
+EnemySpawner_hit(EnemyT *enemy) {
+	if ( ! enemy->alive ) return;
+	Sprite_setFrames(enemy->spr, sizeof(art_explosion01_frames)/sizeof(uint8_t *), art_explosion01_frames);
+	enemy->spr->loop = 0;
+	enemy->alive = 0;
 }
 
 void
