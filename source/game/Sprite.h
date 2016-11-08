@@ -26,7 +26,7 @@ typedef struct {
 void Sprite_init(SpriteT *spr);
 void Sprite_setFrames(SpriteT *spr, int count, uint8_t **art);
 void Sprite_animate(SpriteT *spr);
-void Sprite_draw(SpriteT *spr, uint8_t *fb);
+void Sprite_draw(SpriteT *spr, uint8_t *fb, int offX, int offY);
 void Sprite_setCollide(SpriteT *spr, uint16_t mask, SpriteCollideCallback *callback, void *data);
 int Sprite_overlap(SpriteT *spr1, SpriteT *spr2);
 

@@ -73,6 +73,8 @@ EnemySpawner_hit(EnemyT *enemy) {
 	Sprite_setFrames(enemy->spr, sizeof(art_explosion01_frames)/sizeof(uint8_t *), art_explosion01_frames);
 	enemy->spr->loop = 0;
 	enemy->alive = 0;
+	SpriteManager_screenShake(SCREEN_SHAKE_DURATION);
+	timer_sleep(ENEMY_HIT_SLEEP);
 }
 
 void

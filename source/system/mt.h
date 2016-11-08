@@ -31,6 +31,6 @@ double genrand_real3(void);
 double genrand_res53(void);
 
 /* generates a random number on [min,max)-interval */
-unsigned long genrand_range(unsigned long min, unsigned long max);
+unsigned long genrand_range(long min, long max);
 
 #endif

@@ -171,8 +171,8 @@ double genrand_res53(void)
 /* These real versions are due to Isaku Wada, 2002/01/09 added */
 
 /* generates a random number on [min,max)-interval */
-unsigned long genrand_range(unsigned long min, unsigned long max) {
-	return genrand_int32() % (max - min) + min;
+unsigned long genrand_range(long min, long max) {
+	return genrand_int31() % (max - min) + min;
 }
 
 void hw_random_init(void);

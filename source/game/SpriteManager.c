@@ -2,14 +2,18 @@
 #include "SpriteManager.h"
 #include "zAssert.h"
 #include "config.h"
+#include "timer.h"
+#include "mt.h"
 
 SpriteT sprites[MAX_SPRITE];
+uint64_t shakeStop;
 
 void
 SpriteManager_init() {
 	for ( int i = 0; i < MAX_SPRITE; i++ ) {
 		sprites[i].enabled = 0;
 	}
+	shakeStop = 0;
 }
 
 SpriteT *
@@ -26,12 +30,17 @@ SpriteManager_newSprite() {
 
 void
 SpriteManager_draw(uint8_t *fb) {
+	int offsetx = 0, offsety = 0;
+	if ( timer_current() <= shakeStop ) {
+		offsetx = genrand_range(-SCREEN_SHAKE_AMPLITUDE, SCREEN_SHAKE_AMPLITUDE);
+		offsety = genrand_range(-SCREEN_SHAKE_AMPLITUDE, SCREEN_SHAKE_AMPLITUDE);
+	}
 	for ( int i = 0; i < MAX_SPRITE; i++ ) {
 		if ( sprites[i].enabled ) {
 			Sprite_animate(&sprites[i]);
 			SpriteManager_checkCollide(&sprites[i]);
 			if ( sprites[i].enabled ) {
-				Sprite_draw(&sprites[i], fb);
+				Sprite_draw(&sprites[i], fb, offsetx, offsety);
 			}
 		}
 	}
@@ -49,4 +58,9 @@ SpriteManager_checkCollide(SpriteT *spr) {
 			}
 		}
 	}
+}
+
+void
+SpriteManager_screenShake(uint64_t duration) {
+	shakeStop = timer_current() + duration;
 }
